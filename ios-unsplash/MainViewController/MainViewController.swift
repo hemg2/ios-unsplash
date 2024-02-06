@@ -22,12 +22,13 @@ final class MainViewController: UITabBarController {
     }
     
     private func setupTabbarLayout() {
-        tabBar.barTintColor = .black
+        tabBar.tintColor = .black
     }
     
     private func setupTabbarConfigureUI() {
         let photoVC = PhotoListViewController()
-        photoVC.tabBarItem = UITabBarItem(title: "",
+        let photoNavVC = UINavigationController(rootViewController: photoVC)
+        photoNavVC.tabBarItem = UITabBarItem(title: "",
                                           image: UIImage(systemName: "photo"),
                                           selectedImage: UIImage(systemName: "photo.fill"))
         
@@ -35,7 +36,7 @@ final class MainViewController: UITabBarController {
         searchVC.tabBarItem = UITabBarItem(title: "",
                                           image: UIImage(systemName: "magnifyingglass"),
                                           selectedImage: UIImage(systemName: "magnifyingglass.fill"))
-        viewControllers = [photoVC, searchVC]
+        viewControllers = [photoNavVC, searchVC]
     }
     
 }
