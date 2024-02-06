@@ -18,6 +18,8 @@
 		63BB60752B712DEF002A4F8F /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60742B712DEF002A4F8F /* SearchViewController.swift */; };
 		63BB60782B712F38002A4F8F /* PhotoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60772B712F38002A4F8F /* PhotoListViewController.swift */; };
 		63BB607C2B723588002A4F8F /* PhotoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB607B2B723588002A4F8F /* PhotoListCell.swift */; };
+		63BB607E2B724A9E002A4F8F /* PhotoListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB607D2B724A9E002A4F8F /* PhotoListModel.swift */; };
+		63BB60802B724ABD002A4F8F /* PhtoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB607F2B724ABD002A4F8F /* PhtoListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,8 @@
 		63BB60742B712DEF002A4F8F /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		63BB60772B712F38002A4F8F /* PhotoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListViewController.swift; sourceTree = "<group>"; };
 		63BB607B2B723588002A4F8F /* PhotoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListCell.swift; sourceTree = "<group>"; };
+		63BB607D2B724A9E002A4F8F /* PhotoListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListModel.swift; sourceTree = "<group>"; };
+		63BB607F2B724ABD002A4F8F /* PhtoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhtoListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,7 +172,9 @@
 			isa = PBXGroup;
 			children = (
 				63BB60772B712F38002A4F8F /* PhotoListViewController.swift */,
-				63BB607B2B723588002A4F8F /* PhotoListCell.swift */,
+				63BB607D2B724A9E002A4F8F /* PhotoListModel.swift */,
+				63BB607F2B724ABD002A4F8F /* PhtoListViewModel.swift */,
+				63BB60812B724B7C002A4F8F /* Cell */,
 			);
 			path = PhotoListViewController;
 			sourceTree = "<group>";
@@ -179,6 +185,14 @@
 				63BB604A2B6FCC8B002A4F8F /* Assets.xcassets */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		63BB60812B724B7C002A4F8F /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				63BB607B2B723588002A4F8F /* PhotoListCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -312,9 +326,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				63BB60782B712F38002A4F8F /* PhotoListViewController.swift in Sources */,
+				63BB607E2B724A9E002A4F8F /* PhotoListModel.swift in Sources */,
 				63BB60462B6FCC89002A4F8F /* MainViewController.swift in Sources */,
 				63BB60422B6FCC89002A4F8F /* AppDelegate.swift in Sources */,
 				63BB60752B712DEF002A4F8F /* SearchViewController.swift in Sources */,
+				63BB60802B724ABD002A4F8F /* PhtoListViewModel.swift in Sources */,
 				63BB607C2B723588002A4F8F /* PhotoListCell.swift in Sources */,
 				63BB60442B6FCC89002A4F8F /* SceneDelegate.swift in Sources */,
 			);

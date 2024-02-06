@@ -8,6 +8,7 @@
 import UIKit
 
 final class PhotoListViewController: UIViewController {
+    private var viewModel = PhotoListViewModel()
   
     private let compositionalLayout: UICollectionViewCompositionalLayout = {
         var listConfiguration = UICollectionLayoutListConfiguration(appearance: .plain)
@@ -62,12 +63,15 @@ final class PhotoListViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: "cell")
+        
+        viewModel.loadPhotos()
+        collectionView.reloadData()
     }
 }
 
 extension PhotoListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        viewModel.numberOfItems
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -75,7 +79,8 @@ extension PhotoListViewController: UICollectionViewDataSource, UICollectionViewD
             return UICollectionViewCell()
         }
         
-        cell.setupModel(title: "test")
+        let title = viewModel.titleForItemAt(indexPath: indexPath)
+        cell.setupModel(title: title)
         return cell
     }
 }
