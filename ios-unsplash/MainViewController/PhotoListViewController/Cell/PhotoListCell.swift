@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import Combine
 
 final class PhotoListCell: UICollectionViewCell {
     
-    var onReuse: () -> Void = {}
+    private var cancellable: AnyCancellable?
     
-    let photoImageView: UIImageView = {
+    private let photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .black
@@ -20,14 +21,14 @@ final class PhotoListCell: UICollectionViewCell {
         return imageView
     }()
     
-    let photoImageLabel: UILabel = {
+    private let photoImageLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.shadowColor = .black
         label.layer.shadowOpacity = 0.8
         label.layer.shadowRadius = 10
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .body)
+        label.font = .preferredFont(forTextStyle: .footnote)
         
         return label
     }()
@@ -45,9 +46,10 @@ final class PhotoListCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        onReuse()
+
         photoImageView.image = nil
         photoImageLabel.text = nil
+        cancellable = nil
     }
     
     private func setupContentUI() {
@@ -69,7 +71,10 @@ final class PhotoListCell: UICollectionViewCell {
         ])
     }
     
-    func setupModel(title: String) {
-        photoImageLabel.text = title
+    func setupModel(photo: Photo) {
+        if let photoURL = URL(string: photo.urls.small) {
+            cancellable = photoImageView.loadImage(from: photoURL)
+        }
+        photoImageLabel.text = photo.user.name
     }
 }

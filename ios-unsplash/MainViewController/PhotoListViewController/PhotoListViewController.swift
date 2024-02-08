@@ -96,16 +96,11 @@ extension PhotoListViewController: UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? PhotoListCell,
-              let photo = viewModel.photos[safe: indexPath.row],
-              let photoURL =  URL(string: photo.urls.regular) else {
+              let photo = viewModel.photos[safe: indexPath.row] else {
             return UICollectionViewCell()
         }
         
-        let cancellable = cell.photoImageView.loadImage(from: photoURL)
-        cell.onReuse = {
-            cancellable.cancel()
-        }
-        
+        cell.setupModel(photo: photo)
         return cell
     }
 }
