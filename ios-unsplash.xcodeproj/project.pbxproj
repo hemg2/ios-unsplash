@@ -21,6 +21,8 @@
 		63BB607E2B724A9E002A4F8F /* PhotoListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB607D2B724A9E002A4F8F /* PhotoListModel.swift */; };
 		63BB60802B724ABD002A4F8F /* PhtoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB607F2B724ABD002A4F8F /* PhtoListViewModel.swift */; };
 		63BB60912B748791002A4F8F /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60902B748791002A4F8F /* APIError.swift */; };
+		63BB60932B7487E3002A4F8F /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60922B7487E3002A4F8F /* APIKey.swift */; };
+		63BB60952B7487FE002A4F8F /* Key.plist in Resources */ = {isa = PBXBuildFile; fileRef = 63BB60942B7487FE002A4F8F /* Key.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +61,8 @@
 		63BB607D2B724A9E002A4F8F /* PhotoListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListModel.swift; sourceTree = "<group>"; };
 		63BB607F2B724ABD002A4F8F /* PhtoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhtoListViewModel.swift; sourceTree = "<group>"; };
 		63BB60902B748791002A4F8F /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIError.swift; path = "ios-unsplash/APIError.swift"; sourceTree = SOURCE_ROOT; };
+		63BB60922B7487E3002A4F8F /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIKey.swift; path = "ios-unsplash/APIKey.swift"; sourceTree = SOURCE_ROOT; };
+		63BB60942B7487FE002A4F8F /* Key.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Key.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,8 +113,9 @@
 		63BB60402B6FCC89002A4F8F /* ios-unsplash */ = {
 			isa = PBXGroup;
 			children = (
-				63BB60822B727A0D002A4F8F /* Networking */,
 				63BB604F2B6FCC8B002A4F8F /* Info.plist */,
+				63BB60942B7487FE002A4F8F /* Key.plist */,
+				63BB60822B727A0D002A4F8F /* Networking */,
 				63BB60732B712DB8002A4F8F /* MainViewController */,
 				63BB60722B712CF8002A4F8F /* View */,
 				63BB607A2B712F9F002A4F8F /* Resource */,
@@ -202,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				63BB60902B748791002A4F8F /* APIError.swift */,
+				63BB60922B7487E3002A4F8F /* APIKey.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -312,6 +318,7 @@
 			files = (
 				63BB604E2B6FCC8B002A4F8F /* LaunchScreen.storyboard in Resources */,
 				63BB604B2B6FCC8B002A4F8F /* Assets.xcassets in Resources */,
+				63BB60952B7487FE002A4F8F /* Key.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +347,7 @@
 				63BB607E2B724A9E002A4F8F /* PhotoListModel.swift in Sources */,
 				63BB60462B6FCC89002A4F8F /* MainViewController.swift in Sources */,
 				63BB60422B6FCC89002A4F8F /* AppDelegate.swift in Sources */,
+				63BB60932B7487E3002A4F8F /* APIKey.swift in Sources */,
 				63BB60752B712DEF002A4F8F /* SearchViewController.swift in Sources */,
 				63BB60802B724ABD002A4F8F /* PhtoListViewModel.swift in Sources */,
 				63BB607C2B723588002A4F8F /* PhotoListCell.swift in Sources */,
