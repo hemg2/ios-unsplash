@@ -26,7 +26,7 @@
 		63BB60972B748ABE002A4F8F /* URLSessionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60962B748ABE002A4F8F /* URLSessionProvider.swift */; };
 		63BB60992B748AEE002A4F8F /* UnsplashEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60982B748AEE002A4F8F /* UnsplashEndPoint.swift */; };
 		63BB609C2B748FFA002A4F8F /* UnsplashRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB609B2B748FFA002A4F8F /* UnsplashRepository.swift */; };
-		63BB609F2B74C138002A4F8F /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB609E2B74C138002A4F8F /* UIImageView.swift */; };
+		63BB609F2B74C138002A4F8F /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB609E2B74C138002A4F8F /* UIImageView+extension.swift */; };
 		63BB60A12B74C38D002A4F8F /* Array+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60A02B74C38D002A4F8F /* Array+extension.swift */; };
 /* End PBXBuildFile section */
 
@@ -71,7 +71,7 @@
 		63BB60962B748ABE002A4F8F /* URLSessionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLSessionProvider.swift; path = "ios-unsplash/URLSessionProvider.swift"; sourceTree = SOURCE_ROOT; };
 		63BB60982B748AEE002A4F8F /* UnsplashEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UnsplashEndPoint.swift; path = "ios-unsplash/UnsplashEndPoint.swift"; sourceTree = SOURCE_ROOT; };
 		63BB609B2B748FFA002A4F8F /* UnsplashRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashRepository.swift; sourceTree = "<group>"; };
-		63BB609E2B74C138002A4F8F /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
+		63BB609E2B74C138002A4F8F /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		63BB60A02B74C38D002A4F8F /* Array+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -237,7 +237,7 @@
 		63BB609D2B74C11C002A4F8F /* UIImageView+extension */ = {
 			isa = PBXGroup;
 			children = (
-				63BB609E2B74C138002A4F8F /* UIImageView.swift */,
+				63BB609E2B74C138002A4F8F /* UIImageView+extension.swift */,
 				63BB60A02B74C38D002A4F8F /* Array+extension.swift */,
 			);
 			path = "UIImageView+extension";
@@ -376,7 +376,7 @@
 			files = (
 				63BB60992B748AEE002A4F8F /* UnsplashEndPoint.swift in Sources */,
 				63BB60782B712F38002A4F8F /* PhotoListViewController.swift in Sources */,
-				63BB609F2B74C138002A4F8F /* UIImageView.swift in Sources */,
+				63BB609F2B74C138002A4F8F /* UIImageView+extension.swift in Sources */,
 				63BB607E2B724A9E002A4F8F /* PhotoListModel.swift in Sources */,
 				63BB60462B6FCC89002A4F8F /* MainViewController.swift in Sources */,
 				63BB60422B6FCC89002A4F8F /* AppDelegate.swift in Sources */,

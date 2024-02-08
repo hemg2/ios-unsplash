@@ -49,7 +49,6 @@ final class PhotoListCell: UICollectionViewCell {
 
         photoImageView.image = nil
         photoImageLabel.text = nil
-        cancellable = nil
     }
     
     private func setupContentUI() {

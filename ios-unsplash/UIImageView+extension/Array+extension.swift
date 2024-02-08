@@ -2,7 +2,7 @@
 //  Array+extension.swift
 //  ios-unsplash
 //
-//  Created by 1 on 2/8/24.
+//  Created by Hemg on 2/8/24.
 //
 
 import Foundation

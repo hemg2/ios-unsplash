@@ -41,7 +41,7 @@ struct Photo: Decodable {
 }
 
 // 사진 URL 정보를 담는 구조체
-struct PhotoURLs: Codable {
+struct PhotoURLs: Decodable {
     let raw: String
     let full: String
     let regular: String
@@ -56,7 +56,7 @@ struct PhotoURLs: Codable {
 }
 
 // 사진 링크 정보를 담는 구조체
-struct PhotoLinks: Codable {
+struct PhotoLinks: Decodable {
     let `self`: String
     let html: String
     let download: String
@@ -70,7 +70,7 @@ struct PhotoLinks: Codable {
 }
 
 // 후원 정보를 담는 구조체
-struct Sponsorship: Codable {
+struct Sponsorship: Decodable {
     let impressionUrls: [String]
     let tagline: String
     let taglineUrl: String
@@ -85,7 +85,7 @@ struct Sponsorship: Codable {
 }
 
 // 사용자 정보를 담는 구조체
-struct User: Codable {
+struct User: Decodable {
     let id: String
     let updatedAt: String
     let username: String
@@ -125,7 +125,7 @@ struct User: Codable {
 }
 
 // 사용자 링크 정보를 담는 구조체
-struct UserLinks: Codable {
+struct UserLinks: Decodable {
     let `self`: String
     let html: String
     let photos: String
