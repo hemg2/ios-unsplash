@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import Combine
 
 protocol UnsplashRepository {
-    func fetchPhotos(completion: @escaping (Result<[Photo], Error>) -> Void)
+    func fetchPhotos() -> AnyPublisher<[Photo], Error>
 }
 
 final class UnsplashRepositoryImplementation: UnsplashRepository {
@@ -18,26 +19,16 @@ final class UnsplashRepositoryImplementation: UnsplashRepository {
     init(sessionProvider: URLSessionProvider, decoder: JSONDecoder = JSONDecoder()) {
         self.sessionProvider = sessionProvider
         self.decoder = decoder
+        self.decoder.dateDecodingStrategy = .iso8601
     }
     
-    func fetchPhotos(completion: @escaping (Result<[Photo], Error>) -> Void) {
+    func fetchPhotos() -> AnyPublisher<[Photo], Error> {
         guard let url = UnsplashEndPoint().url else {
-            completion(.failure(APIError.invalidURL))
-            return
+            return Fail(error: APIError.invalidURL).eraseToAnyPublisher()
         }
         
-        sessionProvider.requestData(url: url, header: nil) { result in
-            switch result {
-            case .success(let data):
-                do {
-                    let photos = try self.decoder.decode([Photo].self, from: data)
-                    completion(.success(photos))
-                } catch {
-                    completion(.failure(error))
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        return sessionProvider.requestData(url: url, header: nil)
+            .decode(type: [Photo].self, decoder: decoder)
+            .eraseToAnyPublisher()
     }
 }

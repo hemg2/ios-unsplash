@@ -13,9 +13,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        
+        let sessionProvider: URLSessionProvider = URLSessionProviderImplementation()
+        let repository: UnsplashRepository = UnsplashRepositoryImplementation(sessionProvider: sessionProvider)
+        let viewModel = PhotoListViewModel(repository: repository)
+        let mainViewController = MainViewController(viewModel: viewModel)
         window = UIWindow(windowScene: windowScene)
-        let mainViewController = MainViewController()
         window?.rootViewController = mainViewController
         window?.backgroundColor = .systemBackground
         window?.makeKeyAndVisible()

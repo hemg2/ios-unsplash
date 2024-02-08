@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import Combine
 
 final class PhotoListViewModel {
     private let repository: UnsplashRepository
-    var photos: [Photo] = []
+    @Published var photos: [Photo] = []
+    var cancellables: Set<AnyCancellable> = []
+    
     var onPhotosUpdate: (() -> Void)?
     var onError: ((Error) -> Void)?
     
@@ -18,16 +21,17 @@ final class PhotoListViewModel {
     }
     
     func loadPhotos() {
-        repository.fetchPhotos { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let photos):
-                    self?.photos = photos
-                    self?.onPhotosUpdate?()
-                case .failure(let error):
-                    self?.onError?(error)
+        repository.fetchPhotos()
+            .sink { completion in
+                switch completion {
+                case.failure(let error):
+                    self.onError?(error)
+                case .finished:
+                    break
                 }
+            } receiveValue: { photos in
+                self.photos = photos
             }
-        }
+            .store(in: &cancellables)
     }
 }

@@ -26,6 +26,8 @@
 		63BB60972B748ABE002A4F8F /* URLSessionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60962B748ABE002A4F8F /* URLSessionProvider.swift */; };
 		63BB60992B748AEE002A4F8F /* UnsplashEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60982B748AEE002A4F8F /* UnsplashEndPoint.swift */; };
 		63BB609C2B748FFA002A4F8F /* UnsplashRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB609B2B748FFA002A4F8F /* UnsplashRepository.swift */; };
+		63BB609F2B74C138002A4F8F /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB609E2B74C138002A4F8F /* UIImageView.swift */; };
+		63BB60A12B74C38D002A4F8F /* Array+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60A02B74C38D002A4F8F /* Array+extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +71,8 @@
 		63BB60962B748ABE002A4F8F /* URLSessionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLSessionProvider.swift; path = "ios-unsplash/URLSessionProvider.swift"; sourceTree = SOURCE_ROOT; };
 		63BB60982B748AEE002A4F8F /* UnsplashEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UnsplashEndPoint.swift; path = "ios-unsplash/UnsplashEndPoint.swift"; sourceTree = SOURCE_ROOT; };
 		63BB609B2B748FFA002A4F8F /* UnsplashRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashRepository.swift; sourceTree = "<group>"; };
+		63BB609E2B74C138002A4F8F /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
+		63BB60A02B74C38D002A4F8F /* Array+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +123,7 @@
 		63BB60402B6FCC89002A4F8F /* ios-unsplash */ = {
 			isa = PBXGroup;
 			children = (
+				63BB609D2B74C11C002A4F8F /* UIImageView+extension */,
 				63BB604F2B6FCC8B002A4F8F /* Info.plist */,
 				63BB60942B7487FE002A4F8F /* Key.plist */,
 				63BB60822B727A0D002A4F8F /* Networking */,
@@ -186,8 +191,8 @@
 			isa = PBXGroup;
 			children = (
 				63BB60772B712F38002A4F8F /* PhotoListViewController.swift */,
-				63BB607D2B724A9E002A4F8F /* PhotoListModel.swift */,
 				63BB607F2B724ABD002A4F8F /* PhtoListViewModel.swift */,
+				63BB607D2B724A9E002A4F8F /* PhotoListModel.swift */,
 				63BB60812B724B7C002A4F8F /* Cell */,
 			);
 			path = PhotoListViewController;
@@ -227,6 +232,15 @@
 				63BB609B2B748FFA002A4F8F /* UnsplashRepository.swift */,
 			);
 			path = Repository;
+			sourceTree = "<group>";
+		};
+		63BB609D2B74C11C002A4F8F /* UIImageView+extension */ = {
+			isa = PBXGroup;
+			children = (
+				63BB609E2B74C138002A4F8F /* UIImageView.swift */,
+				63BB60A02B74C38D002A4F8F /* Array+extension.swift */,
+			);
+			path = "UIImageView+extension";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -362,6 +376,7 @@
 			files = (
 				63BB60992B748AEE002A4F8F /* UnsplashEndPoint.swift in Sources */,
 				63BB60782B712F38002A4F8F /* PhotoListViewController.swift in Sources */,
+				63BB609F2B74C138002A4F8F /* UIImageView.swift in Sources */,
 				63BB607E2B724A9E002A4F8F /* PhotoListModel.swift in Sources */,
 				63BB60462B6FCC89002A4F8F /* MainViewController.swift in Sources */,
 				63BB60422B6FCC89002A4F8F /* AppDelegate.swift in Sources */,
@@ -371,6 +386,7 @@
 				63BB60972B748ABE002A4F8F /* URLSessionProvider.swift in Sources */,
 				63BB607C2B723588002A4F8F /* PhotoListCell.swift in Sources */,
 				63BB60442B6FCC89002A4F8F /* SceneDelegate.swift in Sources */,
+				63BB60A12B74C38D002A4F8F /* Array+extension.swift in Sources */,
 				63BB609C2B748FFA002A4F8F /* UnsplashRepository.swift in Sources */,
 				63BB60912B748791002A4F8F /* APIError.swift in Sources */,
 			);

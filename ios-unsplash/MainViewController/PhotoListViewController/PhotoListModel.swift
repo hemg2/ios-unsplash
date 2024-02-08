@@ -7,10 +7,6 @@
 
 import Foundation
 
-struct PhotoTest {
-    let title: String
-}
-
 // 사진 정보를 담는 구조체
 struct Photo: Decodable {
     let id: String
@@ -91,7 +87,7 @@ struct Sponsorship: Codable {
 // 사용자 정보를 담는 구조체
 struct User: Codable {
     let id: String
-    let updatedAt: Date
+    let updatedAt: String
     let username: String
     let name: String
     let firstName: String

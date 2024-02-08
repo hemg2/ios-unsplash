@@ -9,7 +9,9 @@ import UIKit
 
 final class PhotoListCell: UICollectionViewCell {
     
-    private let photoImageView: UIImageView = {
+    var onReuse: () -> Void = {}
+    
+    let photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .black
@@ -18,7 +20,7 @@ final class PhotoListCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let photoImageLabel: UILabel = {
+    let photoImageLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.shadowColor = .black
@@ -39,6 +41,13 @@ final class PhotoListCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        onReuse()
+        photoImageView.image = nil
+        photoImageLabel.text = nil
     }
     
     private func setupContentUI() {

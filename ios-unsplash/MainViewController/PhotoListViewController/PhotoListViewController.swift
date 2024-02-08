@@ -43,6 +43,8 @@ final class PhotoListViewController: UIViewController {
         configureUI()
         setupNavigationBar()
         setupCollectionView()
+        bindViewModel()
+        viewModel.loadPhotos()
     }
     
     private func configureUI() {
@@ -76,16 +78,32 @@ final class PhotoListViewController: UIViewController {
         
         collectionView.reloadData()
     }
+    
+    private func bindViewModel() {
+        viewModel.$photos
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.collectionView.reloadData()
+            }
+            .store(in: &viewModel.cancellables)
+    }
 }
 
 extension PhotoListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        viewModel.photos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? PhotoListCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? PhotoListCell,
+              let photo = viewModel.photos[safe: indexPath.row],
+              let photoURL =  URL(string: photo.urls.regular) else {
             return UICollectionViewCell()
+        }
+        
+        let cancellable = cell.photoImageView.loadImage(from: photoURL)
+        cell.onReuse = {
+            cancellable.cancel()
         }
         
         return cell
