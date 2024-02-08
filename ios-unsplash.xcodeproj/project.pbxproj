@@ -25,6 +25,7 @@
 		63BB60952B7487FE002A4F8F /* Key.plist in Resources */ = {isa = PBXBuildFile; fileRef = 63BB60942B7487FE002A4F8F /* Key.plist */; };
 		63BB60972B748ABE002A4F8F /* URLSessionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60962B748ABE002A4F8F /* URLSessionProvider.swift */; };
 		63BB60992B748AEE002A4F8F /* UnsplashEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60982B748AEE002A4F8F /* UnsplashEndPoint.swift */; };
+		63BB609C2B748FFA002A4F8F /* UnsplashRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB609B2B748FFA002A4F8F /* UnsplashRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		63BB60942B7487FE002A4F8F /* Key.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Key.plist; sourceTree = "<group>"; };
 		63BB60962B748ABE002A4F8F /* URLSessionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLSessionProvider.swift; path = "ios-unsplash/URLSessionProvider.swift"; sourceTree = SOURCE_ROOT; };
 		63BB60982B748AEE002A4F8F /* UnsplashEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UnsplashEndPoint.swift; path = "ios-unsplash/UnsplashEndPoint.swift"; sourceTree = SOURCE_ROOT; };
+		63BB609B2B748FFA002A4F8F /* UnsplashRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,8 +216,17 @@
 				63BB60922B7487E3002A4F8F /* APIKey.swift */,
 				63BB60962B748ABE002A4F8F /* URLSessionProvider.swift */,
 				63BB60982B748AEE002A4F8F /* UnsplashEndPoint.swift */,
+				63BB609A2B748FDD002A4F8F /* Repository */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		63BB609A2B748FDD002A4F8F /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				63BB609B2B748FFA002A4F8F /* UnsplashRepository.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -360,6 +371,7 @@
 				63BB60972B748ABE002A4F8F /* URLSessionProvider.swift in Sources */,
 				63BB607C2B723588002A4F8F /* PhotoListCell.swift in Sources */,
 				63BB60442B6FCC89002A4F8F /* SceneDelegate.swift in Sources */,
+				63BB609C2B748FFA002A4F8F /* UnsplashRepository.swift in Sources */,
 				63BB60912B748791002A4F8F /* APIError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
