@@ -107,6 +107,7 @@
 		63BB60402B6FCC89002A4F8F /* ios-unsplash */ = {
 			isa = PBXGroup;
 			children = (
+				63BB60822B727A0D002A4F8F /* Networking */,
 				63BB604F2B6FCC8B002A4F8F /* Info.plist */,
 				63BB60732B712DB8002A4F8F /* MainViewController */,
 				63BB60722B712CF8002A4F8F /* View */,
@@ -193,6 +194,13 @@
 				63BB607B2B723588002A4F8F /* PhotoListCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		63BB60822B727A0D002A4F8F /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

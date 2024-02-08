@@ -8,14 +8,14 @@
 import UIKit
 
 final class PhotoListViewModel {
-    private var photos: [Photo] = []
+    private var photos: [PhotoTest] = []
     
     var numberOfItems: Int {
         return photos.count
     }
     
     func loadPhotos() {
-        photos = [Photo(title: "1"), Photo(title: "2"), Photo(title: "3")]
+        photos = [PhotoTest(title: "1"), PhotoTest(title: "2"), PhotoTest(title: "3")]
     }
     
     func titleForItemAt(indexPath: IndexPath) -> String {
