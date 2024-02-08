@@ -24,6 +24,7 @@
 		63BB60932B7487E3002A4F8F /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60922B7487E3002A4F8F /* APIKey.swift */; };
 		63BB60952B7487FE002A4F8F /* Key.plist in Resources */ = {isa = PBXBuildFile; fileRef = 63BB60942B7487FE002A4F8F /* Key.plist */; };
 		63BB60972B748ABE002A4F8F /* URLSessionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60962B748ABE002A4F8F /* URLSessionProvider.swift */; };
+		63BB60992B748AEE002A4F8F /* UnsplashEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60982B748AEE002A4F8F /* UnsplashEndPoint.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		63BB60922B7487E3002A4F8F /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIKey.swift; path = "ios-unsplash/APIKey.swift"; sourceTree = SOURCE_ROOT; };
 		63BB60942B7487FE002A4F8F /* Key.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Key.plist; sourceTree = "<group>"; };
 		63BB60962B748ABE002A4F8F /* URLSessionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLSessionProvider.swift; path = "ios-unsplash/URLSessionProvider.swift"; sourceTree = SOURCE_ROOT; };
+		63BB60982B748AEE002A4F8F /* UnsplashEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UnsplashEndPoint.swift; path = "ios-unsplash/UnsplashEndPoint.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,6 +213,7 @@
 				63BB60902B748791002A4F8F /* APIError.swift */,
 				63BB60922B7487E3002A4F8F /* APIKey.swift */,
 				63BB60962B748ABE002A4F8F /* URLSessionProvider.swift */,
+				63BB60982B748AEE002A4F8F /* UnsplashEndPoint.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -346,6 +349,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63BB60992B748AEE002A4F8F /* UnsplashEndPoint.swift in Sources */,
 				63BB60782B712F38002A4F8F /* PhotoListViewController.swift in Sources */,
 				63BB607E2B724A9E002A4F8F /* PhotoListModel.swift in Sources */,
 				63BB60462B6FCC89002A4F8F /* MainViewController.swift in Sources */,
