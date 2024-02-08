@@ -12,15 +12,19 @@ protocol URLSessionProvider {
 }
 
 final class URLSessionProviderImplementation: URLSessionProvider {
-    private var dataTask: URLSessionDataTask?
+    private var dataTasks: [URL: URLSessionDataTask] = [:]
     
     func requestData(url: URL?, header: [String: String]?,  completionHandler: @escaping (Result<Data, APIError>) -> Void) {
-        guard let urlRequest  = setUpURLRequest(url: url, header: header) else {
+        guard let url = url, let urlRequest  = setUpURLRequest(url: url, header: header) else {
             completionHandler(.failure(.invalidURL))
             return
         }
         
-        dataTask = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+        let dataTask = URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
+            defer {
+                self?.dataTasks.removeValue(forKey: url)
+            }
+            
             if error != nil {
                 completionHandler(.failure(.requestFail))
                 return
@@ -39,7 +43,18 @@ final class URLSessionProviderImplementation: URLSessionProvider {
             completionHandler(.success(data))
         }
         
-        self.dataTask?.resume()
+        dataTasks[url] = dataTask
+        dataTask.resume()
+    }
+    
+    func cancelRequest(for url: URL) {
+        dataTasks[url]?.cancel()
+        dataTasks.removeAll()
+    }
+    
+    func cancelAllRequests() {
+        dataTasks.forEach { $0.value.cancel() }
+        dataTasks.removeAll()
     }
     
     private func setUpURLRequest(url: URL?, header: [String: String]?) -> URLRequest? {
