@@ -8,17 +8,26 @@
 import UIKit
 
 final class PhotoListViewModel {
-    private var photos: [PhotoTest] = []
+    private let repository: UnsplashRepository
+    var photos: [Photo] = []
+    var onPhotosUpdate: (() -> Void)?
+    var onError: ((Error) -> Void)?
     
-    var numberOfItems: Int {
-        return photos.count
+    init(repository: UnsplashRepository) {
+        self.repository = repository
     }
     
     func loadPhotos() {
-        photos = [PhotoTest(title: "1"), PhotoTest(title: "2"), PhotoTest(title: "3")]
-    }
-    
-    func titleForItemAt(indexPath: IndexPath) -> String {
-        return photos[indexPath.row].title
+        repository.fetchPhotos { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let photos):
+                    self?.photos = photos
+                    self?.onPhotosUpdate?()
+                case .failure(let error):
+                    self?.onError?(error)
+                }
+            }
+        }
     }
 }
