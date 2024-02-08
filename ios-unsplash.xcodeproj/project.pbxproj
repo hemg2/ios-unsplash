@@ -23,6 +23,7 @@
 		63BB60912B748791002A4F8F /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60902B748791002A4F8F /* APIError.swift */; };
 		63BB60932B7487E3002A4F8F /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60922B7487E3002A4F8F /* APIKey.swift */; };
 		63BB60952B7487FE002A4F8F /* Key.plist in Resources */ = {isa = PBXBuildFile; fileRef = 63BB60942B7487FE002A4F8F /* Key.plist */; };
+		63BB60972B748ABE002A4F8F /* URLSessionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60962B748ABE002A4F8F /* URLSessionProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		63BB60902B748791002A4F8F /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIError.swift; path = "ios-unsplash/APIError.swift"; sourceTree = SOURCE_ROOT; };
 		63BB60922B7487E3002A4F8F /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIKey.swift; path = "ios-unsplash/APIKey.swift"; sourceTree = SOURCE_ROOT; };
 		63BB60942B7487FE002A4F8F /* Key.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Key.plist; sourceTree = "<group>"; };
+		63BB60962B748ABE002A4F8F /* URLSessionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLSessionProvider.swift; path = "ios-unsplash/URLSessionProvider.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,6 +210,7 @@
 			children = (
 				63BB60902B748791002A4F8F /* APIError.swift */,
 				63BB60922B7487E3002A4F8F /* APIKey.swift */,
+				63BB60962B748ABE002A4F8F /* URLSessionProvider.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				63BB60932B7487E3002A4F8F /* APIKey.swift in Sources */,
 				63BB60752B712DEF002A4F8F /* SearchViewController.swift in Sources */,
 				63BB60802B724ABD002A4F8F /* PhtoListViewModel.swift in Sources */,
+				63BB60972B748ABE002A4F8F /* URLSessionProvider.swift in Sources */,
 				63BB607C2B723588002A4F8F /* PhotoListCell.swift in Sources */,
 				63BB60442B6FCC89002A4F8F /* SceneDelegate.swift in Sources */,
 				63BB60912B748791002A4F8F /* APIError.swift in Sources */,
