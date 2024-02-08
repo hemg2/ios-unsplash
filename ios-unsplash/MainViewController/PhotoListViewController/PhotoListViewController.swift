@@ -11,17 +11,12 @@ final class PhotoListViewController: UIViewController {
     
     private let viewModel: PhotoListViewModel
     
-    private let compositionalLayout: UICollectionViewCompositionalLayout = {
-        var listConfiguration = UICollectionLayoutListConfiguration(appearance: .plain)
-        
-        listConfiguration.separatorConfiguration.bottomSeparatorInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        let compositionalLayout = UICollectionViewCompositionalLayout.list(using: listConfiguration)
-        return compositionalLayout
-    }()
-    
     private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: compositionalLayout)
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .systemBackground
         
@@ -65,10 +60,10 @@ final class PhotoListViewController: UIViewController {
         let image = UIImage(systemName: "camera")
         let cameraAction = UIAction(title: "", image: image) { action in
             // 버튼 액션
-          }
-          
-          let cameraButton = UIBarButtonItem(primaryAction: cameraAction)
-          navigationItem.leftBarButtonItem = cameraButton
+        }
+        
+        let cameraButton = UIBarButtonItem(primaryAction: cameraAction)
+        navigationItem.leftBarButtonItem = cameraButton
     }
     
     private func setupCollectionView() {
@@ -89,7 +84,7 @@ final class PhotoListViewController: UIViewController {
     }
 }
 
-extension PhotoListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension PhotoListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.photos.count
     }
@@ -102,5 +97,19 @@ extension PhotoListViewController: UICollectionViewDataSource, UICollectionViewD
         
         cell.setupModel(photo: photo)
         return cell
+    }
+}
+
+extension PhotoListViewController : UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let photo = viewModel.photos[safe: indexPath.row] else {
+            return CGSize(width: 0, height: 0)
+        }
+        
+        let width = collectionView.bounds.width
+        let photoAspectRatio = CGFloat(photo.height) / CGFloat(photo.width)
+        let height = width * photoAspectRatio
+        
+        return CGSize(width: width, height: height)
     }
 }

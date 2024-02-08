@@ -72,8 +72,12 @@ final class PhotoListCell: UICollectionViewCell {
     
     func setupModel(photo: Photo) {
         if let photoURL = URL(string: photo.urls.small) {
-            cancellable = photoImageView.loadImage(from: photoURL)
+            DispatchQueue.main.async { [weak self] in
+                self?.cancellable = self?.photoImageView.loadImage(from: photoURL)
+                self?.photoImageLabel.text = photo.user.name
+                
+                self?.layoutIfNeeded()
+            }
         }
-        photoImageLabel.text = photo.user.name
     }
 }
