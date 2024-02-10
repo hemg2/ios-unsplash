@@ -29,6 +29,8 @@
 		63BB609C2B748FFA002A4F8F /* UnsplashRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB609B2B748FFA002A4F8F /* UnsplashRepository.swift */; };
 		63BB609F2B74C138002A4F8F /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB609E2B74C138002A4F8F /* UIImageView+extension.swift */; };
 		63BB60A12B74C38D002A4F8F /* Array+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60A02B74C38D002A4F8F /* Array+extension.swift */; };
+		63F16C022B777A5800C7A94A /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F16C012B777A5800C7A94A /* PhotoDetailViewController.swift */; };
+		63F16C042B77AF2200C7A94A /* PhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F16C032B77AF2200C7A94A /* PhotoDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +85,8 @@
 		63BB609B2B748FFA002A4F8F /* UnsplashRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashRepository.swift; sourceTree = "<group>"; };
 		63BB609E2B74C138002A4F8F /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		63BB60A02B74C38D002A4F8F /* Array+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+extension.swift"; sourceTree = "<group>"; };
+		63F16C012B777A5800C7A94A /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
+		63F16C032B77AF2200C7A94A /* PhotoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +206,7 @@
 			children = (
 				63BB60452B6FCC89002A4F8F /* MainViewController.swift */,
 				63BB60792B712F3C002A4F8F /* PhotoListViewController */,
+				63F16C002B777A0E00C7A94A /* PhotoDetailViewController */,
 				63BB60762B712DFC002A4F8F /* SearchView */,
 			);
 			path = MainViewController;
@@ -268,6 +273,15 @@
 				63BB60A02B74C38D002A4F8F /* Array+extension.swift */,
 			);
 			path = "UIImageView+extension";
+			sourceTree = "<group>";
+		};
+		63F16C002B777A0E00C7A94A /* PhotoDetailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				63F16C012B777A5800C7A94A /* PhotoDetailViewController.swift */,
+				63F16C032B77AF2200C7A94A /* PhotoDetailView.swift */,
+			);
+			path = PhotoDetailViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -441,6 +455,7 @@
 			files = (
 				63BB60992B748AEE002A4F8F /* UnsplashEndPoint.swift in Sources */,
 				63BB60782B712F38002A4F8F /* PhotoListViewController.swift in Sources */,
+				63F16C042B77AF2200C7A94A /* PhotoDetailView.swift in Sources */,
 				63BB609F2B74C138002A4F8F /* UIImageView+extension.swift in Sources */,
 				63BB607E2B724A9E002A4F8F /* PhotoListModel.swift in Sources */,
 				63BB60462B6FCC89002A4F8F /* MainViewController.swift in Sources */,
@@ -448,6 +463,7 @@
 				63BB60932B7487E3002A4F8F /* APIKey.swift in Sources */,
 				63BB60752B712DEF002A4F8F /* SearchViewController.swift in Sources */,
 				63BB60802B724ABD002A4F8F /* PhtoListViewModel.swift in Sources */,
+				63F16C022B777A5800C7A94A /* PhotoDetailViewController.swift in Sources */,
 				63BB60972B748ABE002A4F8F /* URLSessionProvider.swift in Sources */,
 				63BB607C2B723588002A4F8F /* PhotoListCell.swift in Sources */,
 				63BB60442B6FCC89002A4F8F /* SceneDelegate.swift in Sources */,

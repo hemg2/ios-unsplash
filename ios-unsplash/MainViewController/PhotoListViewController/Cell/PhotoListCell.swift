@@ -90,18 +90,9 @@ final class PhotoListCell: UICollectionViewCell {
     func setupModel(photo: Photo) {
         loadingIndicator.startAnimating()
         if let photoURL = URL(string: photo.urls.small) {
-            cancellable = URLSession.shared.dataTaskPublisher(for: photoURL)
-                .map(\.data)
-                .compactMap(UIImage.init)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { [weak self] _ in
-                    self?.loadingIndicator.stopAnimating()
-                }, receiveValue: { [weak self] image in
-                    self?.photoImageView.image = image
-                    self?.photoImageLabel.text = photo.user.name
-                })
-        } else {
+            cancellable = photoImageView.loadImage(from: photoURL)
+            self.photoImageLabel.text = photo.user.name
             loadingIndicator.stopAnimating()
-        }
+        } 
     }
 }

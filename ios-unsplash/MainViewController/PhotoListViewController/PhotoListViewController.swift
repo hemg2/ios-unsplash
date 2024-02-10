@@ -149,6 +149,17 @@ extension PhotoListViewController : UICollectionViewDelegateFlowLayout {
         
         return CGSize(width: width, height: height)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        guard let photo = viewModel.photos[safe: indexPath.row] else { return }
+        let detailView = PhotoDetailViewController()
+        detailView.photo = photo
+        detailView.title = photo.user.name
+        detailView.navigationItem.backButtonTitle = nil
+        
+        navigationController?.pushViewController(detailView, animated: true)
+    }
 }
 
 extension PhotoListViewController: UICollectionViewDataSourcePrefetching {
