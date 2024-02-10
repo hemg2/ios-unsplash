@@ -18,13 +18,22 @@ final class PhotoDetailViewController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
+        navigationBarImteUI()
+        setModel()
     }
     
     private func configureUI() {
-        view.backgroundColor = .systemBackground
-        navigationItem.backButtonTitle = "B"
-        navigationItem.leftBarButtonItem?.title = "a"
-        
+        view.backgroundColor = .black
+    }
+    
+    private func navigationBarImteUI() {
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .black
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.standardAppearance = appearance
+    }
+    
+    private func setModel() {
         guard let photo else { return }
         photoDetailView.setupModel(photo: photo)
     }

@@ -32,8 +32,8 @@ final class PhotoDetailView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "heart"), for: .normal)
-        button.backgroundColor = .systemBackground
-        button.tintColor = .black
+        button.backgroundColor = .black
+        button.tintColor = .white
         
         return button
     }()
@@ -42,8 +42,8 @@ final class PhotoDetailView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "plus"), for: .normal)
-        button.backgroundColor = .systemBackground
-        button.tintColor = .black
+        button.backgroundColor = .black
+        button.tintColor = .white
         
         return button
     }()
@@ -52,8 +52,8 @@ final class PhotoDetailView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "arrow.down"), for: .normal)
-        button.backgroundColor = .systemBackground
-        button.tintColor = .black
+        button.backgroundColor = .black
+        button.tintColor = .white
         
         return button
     }()
@@ -99,8 +99,6 @@ final class PhotoDetailView: UIView {
         NSLayoutConstraint.activate([
             photoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             photoImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            photoImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.8),
-            photoImageView.heightAnchor.constraint(equalTo: photoImageView.widthAnchor)
         ])
     }
 }
