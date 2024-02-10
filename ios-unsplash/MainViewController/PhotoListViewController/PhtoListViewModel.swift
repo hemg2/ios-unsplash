@@ -11,11 +11,11 @@ import Combine
 final class PhotoListViewModel {
     private let repository: UnsplashRepository
     @Published var photos: [Photo] = []
+    @Published var isLoading: Bool = false
+    @Published var onError: ((Error) -> Void)?
     var cancellables: Set<AnyCancellable> = []
     var pageNumber: Int = 0
-    var isLoading: Bool = false
     var isLastPage: Bool = false
-    var onError: ((Error) -> Void)?
     
     init(repository: UnsplashRepository) {
         self.repository = repository
