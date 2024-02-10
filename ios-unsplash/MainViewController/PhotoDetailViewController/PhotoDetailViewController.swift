@@ -19,6 +19,7 @@ final class PhotoDetailViewController: UIViewController {
         
         configureUI()
         navigationBarImteUI()
+        setupShareButton()
         setModel()
     }
     
@@ -31,6 +32,16 @@ final class PhotoDetailViewController: UIViewController {
         appearance.backgroundColor = .black
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationController?.navigationBar.standardAppearance = appearance
+    }
+    
+    private func setupShareButton() {
+        let image = UIImage(systemName: "square.and.arrow.up")
+        let shareAction = UIAction(title: "", image: image) { action in
+            // 버튼 액션
+        }
+        
+        let shareButton = UIBarButtonItem(primaryAction: shareAction)
+        navigationItem.rightBarButtonItem = shareButton
     }
     
     private func setModel() {

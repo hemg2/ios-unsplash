@@ -34,6 +34,15 @@ final class PhotoDetailView: UIView {
         button.setImage(UIImage(systemName: "heart"), for: .normal)
         button.backgroundColor = .black
         button.tintColor = .white
+        button.layer.cornerRadius = 25
+        button.clipsToBounds = true
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 1.0
+        button.layer.shadowOpacity = 0.5
+        button.layer.shadowOffset = CGSize(width: 0, height: 2)
+        button.layer.shadowRadius = 2
         
         return button
     }()
@@ -44,6 +53,15 @@ final class PhotoDetailView: UIView {
         button.setImage(UIImage(systemName: "plus"), for: .normal)
         button.backgroundColor = .black
         button.tintColor = .white
+        button.layer.cornerRadius = 25
+        button.clipsToBounds = true
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 1.0
+        button.layer.shadowOpacity = 0.5
+        button.layer.shadowOffset = CGSize(width: 0, height: 2)
+        button.layer.shadowRadius = 2
         
         return button
     }()
@@ -52,8 +70,12 @@ final class PhotoDetailView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "arrow.down"), for: .normal)
-        button.backgroundColor = .black
-        button.tintColor = .white
+        button.backgroundColor = .white
+        button.tintColor = .black
+        button.layer.cornerRadius = 25
+        button.clipsToBounds = true
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         return button
     }()
