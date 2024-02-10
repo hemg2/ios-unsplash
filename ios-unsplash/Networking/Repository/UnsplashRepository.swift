@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol UnsplashRepository {
-    func fetchPhotos() -> AnyPublisher<[Photo], Error>
+    func fetchPhotos(page: Int) -> AnyPublisher<[Photo], Error>
 }
 
 final class UnsplashRepositoryImplementation: UnsplashRepository {
@@ -22,8 +22,9 @@ final class UnsplashRepositoryImplementation: UnsplashRepository {
         self.decoder.dateDecodingStrategy = .iso8601
     }
     
-    func fetchPhotos() -> AnyPublisher<[Photo], Error> {
-        guard let url = UnsplashEndPoint().url else {
+    func fetchPhotos(page: Int) -> AnyPublisher<[Photo], Error> {
+        let endPoint = UnsplashEndPoint()
+        guard let url = endPoint.url(pageNumber: page) else {
             return Fail(error: APIError.invalidURL).eraseToAnyPublisher()
         }
         

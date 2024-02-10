@@ -13,12 +13,14 @@ struct UnsplashEndPoint {
     private let path: String = "/photos"
     private let apiKey: String = APIKey.unsplash
     
-    var url: URL? {
+    func url(pageNumber: Int) -> URL? {
         var component = URLComponents()
         component.scheme = scheme
         component.host = host
         component.path = path
         component.queryItems = [
+            URLQueryItem(name: "per_page", value: "30"),
+            URLQueryItem(name: "page", value: String(pageNumber)),
             URLQueryItem(name: "client_id", value: apiKey)
         ]
         
