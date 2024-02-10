@@ -19,7 +19,7 @@ struct UnsplashEndPoint {
         component.host = host
         component.path = path
         component.queryItems = [
-            URLQueryItem(name: "per_page", value: "30"),
+            URLQueryItem(name: "per_page", value: "10"),
             URLQueryItem(name: "page", value: String(pageNumber)),
             URLQueryItem(name: "client_id", value: apiKey)
         ]
