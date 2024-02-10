@@ -23,6 +23,26 @@ final class PhotoListViewController: UIViewController {
         return collectionView
     }()
     
+    private lazy var activityIndicatorView: UIActivityIndicatorView = {
+        let activityIndicatorView = UIActivityIndicatorView()
+        
+        activityIndicatorView.center = view.center
+        activityIndicatorView.style = .large
+        activityIndicatorView.startAnimating()
+        return activityIndicatorView
+    }()
+    
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        let refreshAction = UIAction { [weak self] _ in
+            guard let self else { return }
+            self.viewModel.loadPhotos(isRefresh: true)
+        }
+        
+        refreshControl.addAction(refreshAction, for: .valueChanged)
+        return refreshControl
+    }()
+    
     init(viewModel: PhotoListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -38,6 +58,11 @@ final class PhotoListViewController: UIViewController {
         configureUI()
         setupNavigationBar()
         setupCollectionView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         bindViewModel()
         viewModel.loadPhotos()
     }
@@ -45,6 +70,7 @@ final class PhotoListViewController: UIViewController {
     private func configureUI() {
         view.backgroundColor = .systemBackground
         view.addSubview(collectionView)
+        view.addSubview(activityIndicatorView)
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -69,9 +95,19 @@ final class PhotoListViewController: UIViewController {
     private func setupCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.prefetchDataSource = self
         collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.refreshControl = refreshControl
         
         collectionView.reloadData()
+    }
+    
+    private func stopRefreshing() {
+        self.refreshControl.endRefreshing()
+        
+        if self.activityIndicatorView.isAnimating {
+            self.activityIndicatorView.stopAnimating()
+        }
     }
     
     private func bindViewModel() {
@@ -79,6 +115,7 @@ final class PhotoListViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.collectionView.reloadData()
+                self?.stopRefreshing()
             }
             .store(in: &viewModel.cancellables)
     }
@@ -111,5 +148,17 @@ extension PhotoListViewController : UICollectionViewDelegateFlowLayout {
         let height = width * photoAspectRatio
         
         return CGSize(width: width, height: height)
+    }
+}
+
+extension PhotoListViewController: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        guard let maxRow = indexPaths.map({ $0.row }).max(), !viewModel.isLoading else {
+            return
+        }
+        
+        if maxRow >= viewModel.photos.count - 1 {
+            viewModel.loadPhotos()
+        }
     }
 }
