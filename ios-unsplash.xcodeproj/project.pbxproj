@@ -75,11 +75,11 @@
 		63BB607B2B723588002A4F8F /* PhotoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListCell.swift; sourceTree = "<group>"; };
 		63BB607D2B724A9E002A4F8F /* PhotoListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListModel.swift; sourceTree = "<group>"; };
 		63BB607F2B724ABD002A4F8F /* PhtoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhtoListViewModel.swift; sourceTree = "<group>"; };
-		63BB60902B748791002A4F8F /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIError.swift; path = "ios-unsplash/APIError.swift"; sourceTree = SOURCE_ROOT; };
-		63BB60922B7487E3002A4F8F /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIKey.swift; path = "ios-unsplash/APIKey.swift"; sourceTree = SOURCE_ROOT; };
+		63BB60902B748791002A4F8F /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIError.swift; path = "ios-unsplash/Networking/APIError.swift"; sourceTree = SOURCE_ROOT; };
+		63BB60922B7487E3002A4F8F /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIKey.swift; path = "ios-unsplash/Networking/APIKey.swift"; sourceTree = SOURCE_ROOT; };
 		63BB60942B7487FE002A4F8F /* Key.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Key.plist; sourceTree = "<group>"; };
-		63BB60962B748ABE002A4F8F /* URLSessionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLSessionProvider.swift; path = "ios-unsplash/URLSessionProvider.swift"; sourceTree = SOURCE_ROOT; };
-		63BB60982B748AEE002A4F8F /* UnsplashEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UnsplashEndPoint.swift; path = "ios-unsplash/UnsplashEndPoint.swift"; sourceTree = SOURCE_ROOT; };
+		63BB60962B748ABE002A4F8F /* URLSessionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLSessionProvider.swift; path = "ios-unsplash/Networking/URLSessionProvider.swift"; sourceTree = SOURCE_ROOT; };
+		63BB60982B748AEE002A4F8F /* UnsplashEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UnsplashEndPoint.swift; path = "ios-unsplash/Networking/UnsplashEndPoint.swift"; sourceTree = SOURCE_ROOT; };
 		63BB609B2B748FFA002A4F8F /* UnsplashRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashRepository.swift; sourceTree = "<group>"; };
 		63BB609E2B74C138002A4F8F /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		63BB60A02B74C38D002A4F8F /* Array+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+extension.swift"; sourceTree = "<group>"; };
