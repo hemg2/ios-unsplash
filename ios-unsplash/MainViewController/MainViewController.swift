@@ -9,7 +9,7 @@ import UIKit
 
 final class MainViewController: UITabBarController {
     let viewModel: PhotoListViewModel
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,24 +28,28 @@ final class MainViewController: UITabBarController {
     }
     
     private func setUpViewController() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .black
     }
     
     private func setupTabbarLayout() {
-        tabBar.tintColor = .black
+        let appearance = UITabBarAppearance()
+        appearance.backgroundColor = .black
+        tabBar.tintColor = .white
+        
+        tabBar.standardAppearance = appearance
     }
     
     private func setupTabbarConfigureUI() {
         let photoVC = PhotoListViewController(viewModel: viewModel)
         let photoNavVC = UINavigationController(rootViewController: photoVC)
         photoNavVC.tabBarItem = UITabBarItem(title: "",
-                                          image: UIImage(systemName: "photo"),
-                                          selectedImage: UIImage(systemName: "photo.fill"))
+                                             image: UIImage(systemName: "photo"),
+                                             selectedImage: UIImage(systemName: "photo.fill"))
         
         let searchVC = SearchViewController()
         searchVC.tabBarItem = UITabBarItem(title: "",
-                                          image: UIImage(systemName: "magnifyingglass"),
-                                          selectedImage: UIImage(systemName: "magnifyingglass.fill"))
+                                           image: UIImage(systemName: "magnifyingglass"),
+                                           selectedImage: UIImage(systemName: "magnifyingglass.fill"))
         viewControllers = [photoNavVC, searchVC]
     }
     

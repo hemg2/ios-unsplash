@@ -68,7 +68,7 @@ final class PhotoListViewController: UIViewController {
     }
     
     private func configureUI() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .black
         view.addSubview(collectionView)
         view.addSubview(activityIndicatorView)
         
@@ -82,6 +82,10 @@ final class PhotoListViewController: UIViewController {
     
     private func setupNavigationBar() {
         navigationItem.title = "Unsplash"
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .black
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.standardAppearance = appearance
         
         let image = UIImage(systemName: "camera")
         let cameraAction = UIAction(title: "", image: image) { action in
@@ -148,6 +152,16 @@ extension PhotoListViewController : UICollectionViewDelegateFlowLayout {
         let height = width * photoAspectRatio
         
         return CGSize(width: width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        guard let photo = viewModel.photos[safe: indexPath.row] else { return }
+        let detailView = PhotoDetailViewController()
+        detailView.photo = photo
+        detailView.title = photo.user.name
+        
+        navigationController?.pushViewController(detailView, animated: true)
     }
 }
 
