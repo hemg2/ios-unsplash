@@ -157,7 +157,8 @@ extension PhotoListViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         guard let photo = viewModel.photos[safe: indexPath.row] else { return }
-        let detailView = PhotoDetailViewController()
+        let detailViewModel = PhotoDetailViewModel(photos: viewModel.photos, currentIndex: indexPath.row)
+        let detailView = PhotoDetailViewController(viewModel: detailViewModel)
         detailView.photo = photo
         detailView.title = photo.user.name
         detailView.hidesBottomBarWhenPushed = true

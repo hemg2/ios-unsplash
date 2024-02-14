@@ -11,6 +11,7 @@ final class PhotoDetailViewController: UIViewController {
     
     var photo: Photo?
     private let photoDetailView = PhotoDetailView()
+    private var viewModel: PhotoDetailViewModel
     
     override func loadView() { view = photoDetailView }
     
@@ -22,6 +23,17 @@ final class PhotoDetailViewController: UIViewController {
         setupShareButton()
         setModel()
         setupTapGesture()
+        setupBindings()
+        setupSwipeGestures()
+    }
+    
+    init(viewModel: PhotoDetailViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func configureUI() {
@@ -62,5 +74,56 @@ final class PhotoDetailViewController: UIViewController {
             navigationController.navigationBar.alpha = shouldHide ? 0 : 1
             self.photoDetailView.toggleUIElements(shouldHide: shouldHide)
         }
+    }
+    
+    private func setupBindings() {
+        viewModel.$currentIndex
+            .sink { [weak self] _ in
+                self?.updatePhotoDetailView()
+            }
+            .store(in: &viewModel.cancellables)
+    }
+    
+    private func setupSwipeGestures() {
+        let swipeLeftGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeToLeft(_:)))
+        swipeLeftGesture.direction = .left
+        view.addGestureRecognizer(swipeLeftGesture)
+        
+        let swipeRightGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeToRight(_:)))
+        swipeRightGesture.direction = .right
+        view.addGestureRecognizer(swipeRightGesture)
+    }
+    
+    @objc private func handleSwipeToLeft(_ gesture: UISwipeGestureRecognizer) {
+        
+        let newFrame = photoDetailView.frame.offsetBy(dx: -view.frame.width, dy: 0)
+        UIView.animate(withDuration: 0.5, animations: { [weak self] in
+            self?.photoDetailView.frame = newFrame
+            self?.viewModel.showNextPhoto()
+            self?.photoDetailView.showLoadingIndicator()
+        }) { _ in
+            self.photoDetailView.frame = self.view.bounds
+            self.updatePhotoDetailView()
+            self.photoDetailView.hideLoadingIndicator()
+        }
+    }
+    
+    @objc private func handleSwipeToRight(_ gesture: UISwipeGestureRecognizer) {
+        let newFrame = photoDetailView.frame.offsetBy(dx: view.frame.width, dy: 0)
+        UIView.animate(withDuration: 0.5, animations: { [weak self] in
+            self?.photoDetailView.frame = newFrame
+            self?.viewModel.showPreviousPhoto()
+            self?.photoDetailView.showLoadingIndicator()
+        }) { _ in
+            self.photoDetailView.frame = self.view.bounds
+            self.updatePhotoDetailView()
+            self.photoDetailView.hideLoadingIndicator()
+        }
+    }
+    
+    private func updatePhotoDetailView() {
+        let photo = viewModel.photos[viewModel.currentIndex]
+        photoDetailView.setupModel(photo: photo)
+        title = photo.user.name
     }
 }

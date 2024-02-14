@@ -80,6 +80,13 @@ final class PhotoDetailView: UIView {
         return button
     }()
     
+    private let loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -91,15 +98,16 @@ final class PhotoDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupContents() {
+    private func setupContents() {
         addSubview(contentView)
+        addSubview(loadingIndicator)
         contentView.addSubview(photoImageView)
         contentView.addSubview(likeButton)
         contentView.addSubview(addButton)
         contentView.addSubview(downloadButton)
     }
     
-    func setupContentViewLayout() {
+    private func setupContentViewLayout() {
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
@@ -120,6 +128,11 @@ final class PhotoDetailView: UIView {
             photoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             photoImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
+        
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
     }
 }
 
@@ -136,6 +149,18 @@ extension PhotoDetailView {
             self.likeButton.alpha = shouldHide ? 0 : 1
             self.addButton.alpha = shouldHide ? 0 : 1
             self.downloadButton.alpha = shouldHide ? 0 : 1
+        }
+    }
+    
+    func showLoadingIndicator() {
+        DispatchQueue.main.async { [weak self] in
+            self?.loadingIndicator.startAnimating()
+        }
+    }
+    
+    func hideLoadingIndicator() {
+        DispatchQueue.main.async { [weak self] in
+            self?.loadingIndicator.stopAnimating()
         }
     }
 }
