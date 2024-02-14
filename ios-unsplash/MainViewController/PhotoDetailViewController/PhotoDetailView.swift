@@ -133,9 +133,9 @@ extension PhotoDetailView {
     
     func toggleUIElements(shouldHide: Bool) {
         UIView.animate(withDuration: 0.25) {
-            self.likeButton.isHidden = shouldHide
-            self.addButton.isHidden = shouldHide
-            self.downloadButton.isHidden = shouldHide
+            self.likeButton.alpha = shouldHide ? 0 : 1
+            self.addButton.alpha = shouldHide ? 0 : 1
+            self.downloadButton.alpha = shouldHide ? 0 : 1
         }
     }
 }

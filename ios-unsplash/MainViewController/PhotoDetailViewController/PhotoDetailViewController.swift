@@ -57,10 +57,10 @@ final class PhotoDetailViewController: UIViewController {
     
     @objc private func handleTap() {
         guard let navigationController = navigationController else { return }
-        let shouldHide = navigationController.navigationBar.isHidden == false
-        navigationController.setNavigationBarHidden(shouldHide, animated: true)
-        
-        // PhotoDetailView의 UI 요소 숨김/보임 처리
-        photoDetailView.toggleUIElements(shouldHide: shouldHide)
+        let shouldHide = navigationController.navigationBar.alpha == 1
+        UIView.animate(withDuration: 0.25) {
+            navigationController.navigationBar.alpha = shouldHide ? 0 : 1
+            self.photoDetailView.toggleUIElements(shouldHide: shouldHide)
+        }
     }
 }
