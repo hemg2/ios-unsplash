@@ -137,7 +137,7 @@ final class PhotoDetailView: UIView {
 }
 
 extension PhotoDetailView {
-    func loadImage(from url: URL) -> AnyCancellable {
+    func loadImage(from url: URL, completion: (() -> Void)? = nil) -> AnyCancellable {
         let cache = URLCache.shared
         let configuration = URLSessionConfiguration.default
         configuration.urlCache = cache
@@ -152,8 +152,12 @@ extension PhotoDetailView {
             }
             .compactMap(UIImage.init)
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] image in
-                self?.photoImageView.image = image
+            .sink(receiveCompletion: { _ in completion?() }, receiveValue: { [weak self] image in
+                UIView.transition(with: self!,
+                                  duration: 0.5,
+                                  options: .transitionCrossDissolve,
+                                  animations: { self?.photoImageView.image = image },
+                                  completion:nil)
             })
     }
     

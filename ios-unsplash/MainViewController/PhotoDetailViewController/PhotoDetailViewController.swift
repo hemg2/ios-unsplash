@@ -129,27 +129,21 @@ extension PhotoDetailViewController {
     
     @objc private func handleSwipeToLeft(_ gesture: UISwipeGestureRecognizer) {
         let newFrame = photoDetailView.frame.offsetBy(dx: -view.frame.width, dy: 0)
-        UIView.animate(withDuration: 0.5, animations: { [weak self] in
+        UIView.animate(withDuration: 0.25, animations: { [weak self] in
             self?.photoDetailView.frame = newFrame
             self?.viewModel.showNextPhoto()
-            self?.photoDetailView.showLoadingIndicator()
         }) { _ in
             self.photoDetailView.frame = self.view.bounds
-            self.updatePhotoDetailView()
-            self.photoDetailView.hideLoadingIndicator()
         }
     }
     
     @objc private func handleSwipeToRight(_ gesture: UISwipeGestureRecognizer) {
         let newFrame = photoDetailView.frame.offsetBy(dx: view.frame.width, dy: 0)
-        UIView.animate(withDuration: 0.5, animations: { [weak self] in
+        UIView.animate(withDuration: 0.25, animations: { [weak self] in
             self?.photoDetailView.frame = newFrame
             self?.viewModel.showPreviousPhoto()
-            self?.photoDetailView.showLoadingIndicator()
         }) { _ in
             self.photoDetailView.frame = self.view.bounds
-            self.updatePhotoDetailView()
-            self.photoDetailView.hideLoadingIndicator()
         }
     }
 }
