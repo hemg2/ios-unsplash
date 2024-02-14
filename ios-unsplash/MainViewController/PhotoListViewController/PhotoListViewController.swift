@@ -160,6 +160,7 @@ extension PhotoListViewController : UICollectionViewDelegateFlowLayout {
         let detailView = PhotoDetailViewController()
         detailView.photo = photo
         detailView.title = photo.user.name
+        detailView.hidesBottomBarWhenPushed = true
         
         navigationController?.pushViewController(detailView, animated: true)
     }
