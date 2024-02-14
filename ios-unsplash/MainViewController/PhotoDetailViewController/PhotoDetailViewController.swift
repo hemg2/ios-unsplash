@@ -2,7 +2,7 @@
 //  PhotoDetailViewController.swift
 //  ios-unsplash
 //
-//  Created by 1 on 2/10/24.
+//  Created by Hemg on 2/10/24.
 //
 
 import UIKit
@@ -21,6 +21,7 @@ final class PhotoDetailViewController: UIViewController {
         navigationBarImteUI()
         setupShareButton()
         setModel()
+        setupTapGesture()
     }
     
     private func configureUI() {
@@ -47,5 +48,19 @@ final class PhotoDetailViewController: UIViewController {
     private func setModel() {
         guard let photo else { return }
         photoDetailView.setupModel(photo: photo)
+    }
+    
+    private func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func handleTap() {
+        guard let navigationController = navigationController else { return }
+        let shouldHide = navigationController.navigationBar.isHidden == false
+        navigationController.setNavigationBarHidden(shouldHide, animated: true)
+        
+        // PhotoDetailView의 UI 요소 숨김/보임 처리
+        photoDetailView.toggleUIElements(shouldHide: shouldHide)
     }
 }

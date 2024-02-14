@@ -2,7 +2,7 @@
 //  PhotoDetailView.swift
 //  ios-unsplash
 //
-//  Created by 1 on 2/10/24.
+//  Created by Hemg on 2/10/24.
 //
 
 import UIKit
@@ -116,11 +116,9 @@ final class PhotoDetailView: UIView {
             
             downloadButton.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -20),
             downloadButton.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-        ])
-        
-        NSLayoutConstraint.activate([
+            
             photoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            photoImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            photoImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
 }
@@ -131,5 +129,13 @@ extension PhotoDetailView {
         
         photoImageView.loadImage(from: url)
             .store(in: &cancellables)
+    }
+    
+    func toggleUIElements(shouldHide: Bool) {
+        UIView.animate(withDuration: 0.25) {
+            self.likeButton.isHidden = shouldHide
+            self.addButton.isHidden = shouldHide
+            self.downloadButton.isHidden = shouldHide
+        }
     }
 }
