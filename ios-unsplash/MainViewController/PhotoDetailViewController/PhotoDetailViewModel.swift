@@ -11,7 +11,9 @@ import Combine
 final class PhotoDetailViewModel {
     @Published var photos: [Photo]
     @Published var currentIndex: Int
-    var cancellables: Set<AnyCancellable> = []
+    @Published var currentPhotoURL: URL?
+    @Published var isUIElementsHidden: Bool = false
+    @Published var isLoading: Bool = false
 
     init(photos: [Photo], currentIndex: Int) {
         self.photos = photos

@@ -137,11 +137,24 @@ final class PhotoDetailView: UIView {
 }
 
 extension PhotoDetailView {
-    func setupModel(photo: Photo) {
-        guard let url = URL(string: photo.urls.small) else { return }
+    func loadImage(from url: URL) -> AnyCancellable {
+        let cache = URLCache.shared
+        let configuration = URLSessionConfiguration.default
+        configuration.urlCache = cache
+        let session = URLSession(configuration: configuration)
         
-        photoImageView.loadImage(from: url)
-            .store(in: &cancellables)
+        return session.dataTaskPublisher(for: url)
+            .tryMap { result -> Data in
+                if let response = cache.cachedResponse(for: URLRequest(url: url)) {
+                    return response.data
+                }
+                return result.data
+            }
+            .compactMap(UIImage.init)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] image in
+                self?.photoImageView.image = image
+            })
     }
     
     func toggleUIElements(shouldHide: Bool) {
