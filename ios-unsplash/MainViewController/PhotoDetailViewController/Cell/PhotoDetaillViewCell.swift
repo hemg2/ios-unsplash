@@ -94,8 +94,8 @@ final class PhotoDetaillViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        photoImageView.image = nil
         cancellable?.cancel()
+        photoImageView.image = nil
         loadingIndicator.stopAnimating()
         likeButton.isHidden = false
         addButton.isHidden = false
@@ -122,10 +122,8 @@ final class PhotoDetaillViewCell: UICollectionViewCell {
             downloadButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
             photoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            photoImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
+            photoImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            
             loadingIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
             loadingIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
@@ -143,7 +141,7 @@ extension PhotoDetaillViewCell {
     }
     
     func toggleUIElements(shouldHide: Bool) {
-        UIView.animate(withDuration: 0.25) {
+        UIView.animate(withDuration: 0.15) {
             self.likeButton.alpha = shouldHide ? 0 : 1
             self.addButton.alpha = shouldHide ? 0 : 1
             self.downloadButton.alpha = shouldHide ? 0 : 1

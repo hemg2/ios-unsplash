@@ -102,7 +102,6 @@ final class PhotoDetailViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.scrollToSelectedPhoto()
-                self?.updateTitleBasedOnVisibleCell()
             }
             .store(in: &cancellables)
         viewModel.$isUIElementsHidden
@@ -117,15 +116,17 @@ final class PhotoDetailViewController: UIViewController {
 // MARK: Action
 extension PhotoDetailViewController {
     @objc private func handleTap() {
-        self.viewModel.toggleUIElementsVisibility()
-        self.updateUIVisibility(shouldHide: self.viewModel.isUIElementsHidden)
+        viewModel.toggleUIElementsVisibility()
+        updateUIVisibility(shouldHide: viewModel.isUIElementsHidden)
     }
     
     private func updateUIVisibility(shouldHide: Bool) {
-        self.navigationController?.navigationBar.alpha = shouldHide ? 0 : 1
-        self.collectionView.visibleCells.forEach { cell in
-            if let photoCell = cell as? PhotoDetaillViewCell {
-                photoCell.toggleUIElements(shouldHide: shouldHide)
+        UIView.animate(withDuration: 0.25) {
+            self.navigationController?.navigationBar.alpha = shouldHide ? 0 : 1
+            self.collectionView.visibleCells.forEach { cell in
+                if let photoCell = cell as? PhotoDetaillViewCell {
+                    photoCell.toggleUIElements(shouldHide: shouldHide)
+                }
             }
         }
     }

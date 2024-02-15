@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import Combine
 
 final class PhotoListViewController: UIViewController {
     
     private let viewModel: PhotoListViewModel
+    var cancellables: Set<AnyCancellable> = []
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -121,7 +123,17 @@ final class PhotoListViewController: UIViewController {
                 self?.collectionView.reloadData()
                 self?.stopRefreshing()
             }
-            .store(in: &viewModel.cancellables)
+            .store(in: &cancellables)
+        viewModel.$isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                if isLoading {
+                    self?.activityIndicatorView.startAnimating()
+                } else {
+                    self?.activityIndicatorView.stopAnimating()
+                }
+            }
+            .store(in: &cancellables)
     }
 }
 
