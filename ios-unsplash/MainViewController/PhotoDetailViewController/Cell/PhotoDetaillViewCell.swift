@@ -97,7 +97,9 @@ final class PhotoDetaillViewCell: UICollectionViewCell {
         photoImageView.image = nil
         cancellable?.cancel()
         loadingIndicator.stopAnimating()
-        likeButton.isSelected = false
+        likeButton.isHidden = false
+        addButton.isHidden = false
+        downloadButton.isHidden = false
     }
     
     private func setupContents() {
@@ -109,13 +111,6 @@ final class PhotoDetaillViewCell: UICollectionViewCell {
     }
     
     private func setupContentViewLayout() {
-        NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
-        
         NSLayoutConstraint.activate([
             likeButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40),
             likeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
@@ -138,7 +133,8 @@ final class PhotoDetaillViewCell: UICollectionViewCell {
 }
 
 extension PhotoDetaillViewCell {
-    func configure(photo: Photo) {
+    func configure(photo: Photo, isUIElementsHidden: Bool) {
+        toggleUIElements(shouldHide: isUIElementsHidden)
         loadingIndicator.startAnimating()
         if let photoURL = URL(string: photo.urls.small) {
             cancellable = photoImageView.loadImage(from: photoURL)
@@ -151,18 +147,6 @@ extension PhotoDetaillViewCell {
             self.likeButton.alpha = shouldHide ? 0 : 1
             self.addButton.alpha = shouldHide ? 0 : 1
             self.downloadButton.alpha = shouldHide ? 0 : 1
-        }
-    }
-    
-    func showLoadingIndicator() {
-        DispatchQueue.main.async { [weak self] in
-            self?.loadingIndicator.startAnimating()
-        }
-    }
-    
-    func hideLoadingIndicator() {
-        DispatchQueue.main.async { [weak self] in
-            self?.loadingIndicator.stopAnimating()
         }
     }
 }

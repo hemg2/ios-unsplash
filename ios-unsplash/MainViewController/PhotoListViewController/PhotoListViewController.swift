@@ -125,6 +125,7 @@ final class PhotoListViewController: UIViewController {
     }
 }
 
+// MARK: UICollectionViewDataSource
 extension PhotoListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.photos.count
@@ -141,6 +142,7 @@ extension PhotoListViewController: UICollectionViewDataSource {
     }
 }
 
+// MARK: UICollectionViewDelegateFlowLayout
 extension PhotoListViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let photo = viewModel.photos[safe: indexPath.row] else {
@@ -167,6 +169,7 @@ extension PhotoListViewController : UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: UICollectionViewDataSourcePrefetching
 extension PhotoListViewController: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         guard let maxRow = indexPaths.map({ $0.row }).max(), !viewModel.isLoading else {

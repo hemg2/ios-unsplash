@@ -11,10 +11,8 @@ import Combine
 final class PhotoDetailViewController: UIViewController {
     
     var photo: Photo?
-    private let photoDetailView = PhotoDetailView()
     private var viewModel: PhotoDetailViewModel
-    private var cancellables: Set<AnyCancellable> = []
-    
+    var cancellables: Set<AnyCancellable> = []
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -24,11 +22,11 @@ final class PhotoDetailViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .black
+        collectionView.isPagingEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
         
         return collectionView
     }()
-    
-//    override func loadView() { view = photoDetailView }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,9 +35,9 @@ final class PhotoDetailViewController: UIViewController {
         setupCollectionView()
         setupNavigationBarUI()
         setupShareButton()
+        scrollToSelectedPhoto()
         setupTapGesture()
-        setupSwipeGestures()
-        setupViewModelBindings()
+        bindViewModel()
     }
     
     init(viewModel: PhotoDetailViewModel) {
@@ -49,39 +47,6 @@ final class PhotoDetailViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupViewModelBindings() {
-        viewModel.$currentIndex
-            .sink { [weak self] _ in
-                self?.updatePhotoDetailView()
-            }
-            .store(in: &cancellables)
-        
-        viewModel.$currentPhotoURL
-            .compactMap { $0 }
-            .sink { [weak self] url in
-                if let cancellable = self?.photoDetailView.loadImage(from: url) {
-                    self?.cancellables.insert(cancellable)
-                }
-            }
-            .store(in: &cancellables)
-        
-        viewModel.$isUIElementsHidden
-            .sink { [weak self] isHidden in
-                self?.photoDetailView.toggleUIElements(shouldHide: isHidden)
-            }
-            .store(in: &cancellables)
-        
-        viewModel.$isLoading
-            .sink { [weak self] isLoading in
-                if isLoading {
-                    self?.photoDetailView.showLoadingIndicator()
-                } else {
-                    self?.photoDetailView.hideLoadingIndicator()
-                }
-            }
-            .store(in: &cancellables)
     }
     
     private func configureUI() {
@@ -106,7 +71,6 @@ final class PhotoDetailViewController: UIViewController {
     private func setupCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.prefetchDataSource = self
         collectionView.register(PhotoDetaillViewCell.self, forCellWithReuseIdentifier: "Detailcell")
         
         collectionView.reloadData()
@@ -127,55 +91,62 @@ final class PhotoDetailViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
     }
     
-    private func setupSwipeGestures() {
-        let swipeLeftGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeToLeft(_:)))
-        swipeLeftGesture.direction = .left
-        view.addGestureRecognizer(swipeLeftGesture)
-        
-        let swipeRightGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeToRight(_:)))
-        swipeRightGesture.direction = .right
-        view.addGestureRecognizer(swipeRightGesture)
-    }
-    
-    private func updatePhotoDetailView() {
-        let photo = viewModel.photos[viewModel.currentIndex]
-        if let url = URL(string: photo.urls.small) {
-            let cancellable = photoDetailView.loadImage(from: url)
-            cancellables.insert(cancellable)
-        }
-        title = photo.user.name
+    private func bindViewModel() {
+        viewModel.$photos
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.collectionView.reloadData()
+            }
+            .store(in: &cancellables)
+        viewModel.$currentIndex
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.scrollToSelectedPhoto()
+                self?.updateTitleBasedOnVisibleCell()
+            }
+            .store(in: &cancellables)
+        viewModel.$isUIElementsHidden
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isHidden in
+                self?.updateUIVisibility(shouldHide: isHidden)
+            }
+            .store(in: &cancellables)
     }
 }
 
 // MARK: Action
 extension PhotoDetailViewController {
     @objc private func handleTap() {
-        guard let navigationController = navigationController else { return }
-        let shouldHide = navigationController.navigationBar.alpha == 1
-        UIView.animate(withDuration: 0.25) {
-            navigationController.navigationBar.alpha = shouldHide ? 0 : 1
-            self.photoDetailView.toggleUIElements(shouldHide: shouldHide)
+        self.viewModel.toggleUIElementsVisibility()
+        self.updateUIVisibility(shouldHide: self.viewModel.isUIElementsHidden)
+    }
+    
+    private func updateUIVisibility(shouldHide: Bool) {
+        self.navigationController?.navigationBar.alpha = shouldHide ? 0 : 1
+        self.collectionView.visibleCells.forEach { cell in
+            if let photoCell = cell as? PhotoDetaillViewCell {
+                photoCell.toggleUIElements(shouldHide: shouldHide)
+            }
         }
     }
     
-    @objc private func handleSwipeToLeft(_ gesture: UISwipeGestureRecognizer) {
-        let newFrame = photoDetailView.frame.offsetBy(dx: -view.frame.width, dy: 0)
-        UIView.animate(withDuration: 0.25, animations: { [weak self] in
-            self?.photoDetailView.frame = newFrame
-            self?.viewModel.showNextPhoto()
-        }) { _ in
-            self.photoDetailView.frame = self.view.bounds
+    private func scrollToSelectedPhoto() {
+        guard viewModel.photos.indices.contains(viewModel.currentIndex) else { return }
+        let selectedIndexPath = IndexPath(item: viewModel.currentIndex, section: 0)
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.scrollToItem(at: selectedIndexPath, at: .centeredHorizontally, animated: false)
         }
     }
     
-    @objc private func handleSwipeToRight(_ gesture: UISwipeGestureRecognizer) {
-        let newFrame = photoDetailView.frame.offsetBy(dx: view.frame.width, dy: 0)
-        UIView.animate(withDuration: 0.25, animations: { [weak self] in
-            self?.photoDetailView.frame = newFrame
-            self?.viewModel.showPreviousPhoto()
-        }) { _ in
-            self.photoDetailView.frame = self.view.bounds
-        }
+    private func updateTitleBasedOnVisibleCell() {
+        let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        
+        guard let visibleIndexPath = collectionView.indexPathForItem(at: visiblePoint) else { return }
+        
+        viewModel.currentIndex = visibleIndexPath.row
+        let photo = viewModel.photos[visibleIndexPath.row]
+        title = photo.user.name
     }
 }
 
@@ -191,19 +162,12 @@ extension PhotoDetailViewController: UICollectionViewDataSource  {
             return UICollectionViewCell()
         }
         
-        cell.configure(photo: photo)
+        cell.configure(photo: photo, isUIElementsHidden: viewModel.isUIElementsHidden)
         return cell
     }
 }
 
-extension PhotoDetailViewController: UICollectionViewDataSourcePrefetching {
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        for indexPath in indexPaths {
-            let photo = viewModel.photos[indexPath.item]
-        }
-    }
-}
-
+// MARK: UICollectionViewDelegateFlowLayout
 extension PhotoDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height)
@@ -215,5 +179,9 @@ extension PhotoDetailViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        updateTitleBasedOnVisibleCell()
     }
 }

@@ -10,33 +10,19 @@ import Combine
 
 final class PhotoDetailViewModel {
     @Published var photos: [Photo]
-    @Published var currentIndex: Int = 0 {
-        didSet {
-            updateCurrentPhotoURL()
-        }
-    }
-    @Published var currentPhotoURL: URL?
+    @Published var currentIndex: Int
     @Published var isUIElementsHidden: Bool = false
-    @Published var isLoading: Bool = false
-
     init(photos: [Photo], currentIndex: Int) {
         self.photos = photos
         self.currentIndex = currentIndex
-        updateCurrentPhotoURL()
-    }
-
-    private func updateCurrentPhotoURL() {
-        guard photos.indices.contains(currentIndex) else { return }
-        currentPhotoURL = URL(string: photos[currentIndex].urls.small)
     }
     
-    func showNextPhoto() {
-        guard currentIndex < photos.count else { return }
-        currentIndex += 1
+    func updatePhotos(index: Int) {
+        guard photos.indices.contains(index) else { return }
+        currentIndex = index
     }
-
-    func showPreviousPhoto() {
-        guard currentIndex > 0 else { return }
-        currentIndex -= 1
+    
+    func toggleUIElementsVisibility() {
+        isUIElementsHidden.toggle()
     }
 }
