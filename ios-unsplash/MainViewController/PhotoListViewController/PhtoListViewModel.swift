@@ -53,11 +53,7 @@ final class PhotoListViewModel {
                     self.photos.append(contentsOf: newPhotos)
                 }
                 
-                if newPhotos.isEmpty {
-                    self.isLastPage = true
-                } else {
-                    self.pageNumber += 1
-                }
+                self.isLastPage = newPhotos.isEmpty
             })
             .store(in: &self.cancellables)
     }

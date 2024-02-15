@@ -1,28 +1,21 @@
 //
-//  PhotoDetailView.swift
+//  PhotoDetaillViewCell.swift
 //  ios-unsplash
 //
-//  Created by 1 on 2/10/24.
+//  Created by 1 on 2/14/24.
 //
 
 import UIKit
 import Combine
 
-final class PhotoDetailView: UIView {
+final class PhotoDetaillViewCell: UICollectionViewCell {
     
-    private var cancellables: Set<AnyCancellable> = []
-    
-    private let contentView: UIView = {
-        let view = UIView()
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    private var cancellable: AnyCancellable?
     
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .systemBackground
+        imageView.backgroundColor = .black
         imageView.contentMode = .scaleAspectFill
         
         return imageView
@@ -80,6 +73,13 @@ final class PhotoDetailView: UIView {
         return button
     }()
     
+    private let loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -91,45 +91,60 @@ final class PhotoDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupContents() {
-        addSubview(contentView)
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        cancellable?.cancel()
+        photoImageView.image = nil
+        loadingIndicator.stopAnimating()
+        likeButton.isHidden = false
+        addButton.isHidden = false
+        downloadButton.isHidden = false
+    }
+    
+    private func setupContents() {
+        contentView.addSubview(loadingIndicator)
         contentView.addSubview(photoImageView)
         contentView.addSubview(likeButton)
         contentView.addSubview(addButton)
         contentView.addSubview(downloadButton)
     }
     
-    func setupContentViewLayout() {
+    private func setupContentViewLayout() {
         NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            likeButton.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -40),
-            likeButton.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            likeButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40),
+            likeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
             addButton.bottomAnchor.constraint(equalTo: likeButton.topAnchor, constant: -20),
-            addButton.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            addButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
             downloadButton.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -20),
-            downloadButton.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-        ])
-        
-        NSLayoutConstraint.activate([
+            downloadButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            
             photoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             photoImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            
+            loadingIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 }
 
-extension PhotoDetailView {
-    func setupModel(photo: Photo) {
-        guard let url = URL(string: photo.urls.small) else { return }
-        
-        photoImageView.loadImage(from: url)
-            .store(in: &cancellables)
+extension PhotoDetaillViewCell {
+    func configure(photo: Photo, isUIElementsHidden: Bool) {
+        toggleUIElements(shouldHide: isUIElementsHidden)
+        loadingIndicator.startAnimating()
+        if let photoURL = URL(string: photo.urls.small) {
+            cancellable = photoImageView.loadImage(from: photoURL)
+            loadingIndicator.stopAnimating()
+        }
+    }
+    
+    func toggleUIElements(shouldHide: Bool) {
+        UIView.animate(withDuration: 0.15) {
+            self.likeButton.alpha = shouldHide ? 0 : 1
+            self.addButton.alpha = shouldHide ? 0 : 1
+            self.downloadButton.alpha = shouldHide ? 0 : 1
+        }
     }
 }

@@ -10,7 +10,7 @@ import Combine
 
 extension UIImageView {
     func loadImage(from url: URL) -> AnyCancellable {
-        let cache = URLCache()
+        let cache = URLCache.shared
         let configuration = URLSessionConfiguration.default
         configuration.urlCache = cache
         let session = URLSession(configuration: configuration)

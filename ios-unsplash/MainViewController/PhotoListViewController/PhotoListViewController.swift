@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import Combine
 
 final class PhotoListViewController: UIViewController {
     
     private let viewModel: PhotoListViewModel
+    var cancellables: Set<AnyCancellable> = []
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -121,10 +123,21 @@ final class PhotoListViewController: UIViewController {
                 self?.collectionView.reloadData()
                 self?.stopRefreshing()
             }
-            .store(in: &viewModel.cancellables)
+            .store(in: &cancellables)
+        viewModel.$isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                if isLoading {
+                    self?.activityIndicatorView.startAnimating()
+                } else {
+                    self?.activityIndicatorView.stopAnimating()
+                }
+            }
+            .store(in: &cancellables)
     }
 }
 
+// MARK: UICollectionViewDataSource
 extension PhotoListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.photos.count
@@ -141,6 +154,7 @@ extension PhotoListViewController: UICollectionViewDataSource {
     }
 }
 
+// MARK: UICollectionViewDelegateFlowLayout
 extension PhotoListViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let photo = viewModel.photos[safe: indexPath.row] else {
@@ -157,14 +171,17 @@ extension PhotoListViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         guard let photo = viewModel.photos[safe: indexPath.row] else { return }
-        let detailView = PhotoDetailViewController()
+        let detailViewModel = PhotoDetailViewModel(photos: viewModel.photos, currentIndex: indexPath.row)
+        let detailView = PhotoDetailViewController(viewModel: detailViewModel)
         detailView.photo = photo
         detailView.title = photo.user.name
+        detailView.hidesBottomBarWhenPushed = true
         
         navigationController?.pushViewController(detailView, animated: true)
     }
 }
 
+// MARK: UICollectionViewDataSourcePrefetching
 extension PhotoListViewController: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         guard let maxRow = indexPaths.map({ $0.row }).max(), !viewModel.isLoading else {
