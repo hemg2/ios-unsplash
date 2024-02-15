@@ -183,6 +183,12 @@ extension PhotoDetailViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        for cell in collectionView.visibleCells as! [PhotoDetaillViewCell] {
+            if let indexPath = collectionView.indexPath(for: cell) {
+                let photo = viewModel.photos[indexPath.row]
+                cell.configure(photo: photo, isUIElementsHidden: viewModel.isUIElementsHidden)
+            }
+        }
         updateTitleBasedOnVisibleCell()
     }
 }
