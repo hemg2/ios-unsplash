@@ -9,6 +9,7 @@ import UIKit
 import Combine
 
 final class PhotoListViewModel {
+    
     private let repository: UnsplashRepository
     @Published var photos: [Photo] = []
     @Published var isLoading: Bool = false

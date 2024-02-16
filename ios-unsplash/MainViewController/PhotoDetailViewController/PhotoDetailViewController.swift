@@ -8,11 +8,12 @@
 import UIKit
 import Combine
 
-final class PhotoDetailViewController: UIViewController {
+final class PhotoDetailViewController: UIViewController, ShareDisplayable {
     
     var photo: Photo?
     private var viewModel: PhotoDetailViewModel
     var cancellables: Set<AnyCancellable> = []
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -78,8 +79,10 @@ final class PhotoDetailViewController: UIViewController {
     
     private func setupShareButton() {
         let image = UIImage(systemName: "square.and.arrow.up")
-        let shareAction = UIAction(title: "", image: image) { action in
-            // 버튼 액션
+        let shareAction = UIAction(title: "", image: image) { [weak self] action in
+            guard let self else { return }
+            let currentPhoto = self.viewModel.photos[self.viewModel.currentIndex]
+            self.sharePhto(currentPhoto)
         }
         
         let shareButton = UIBarButtonItem(primaryAction: shareAction)
