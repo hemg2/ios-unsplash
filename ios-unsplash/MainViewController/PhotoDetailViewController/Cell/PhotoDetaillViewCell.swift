@@ -150,7 +150,8 @@ extension PhotoDetaillViewCell {
         if let photoURL = URL(string: photo.urls.small) {
             cancellable = photoImageView.loadImage(from: photoURL)
             loadingIndicator.stopAnimating()
-            toggleLikeButton(isLiked: photo.likedByUser)
+            let isLiked = UserDefaults.standard.isLiked(photoId: photo.id)
+            toggleLikeButton(isLiked: isLiked)
         }
     }
     

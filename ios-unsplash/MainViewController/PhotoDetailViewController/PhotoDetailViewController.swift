@@ -155,9 +155,10 @@ extension PhotoDetailViewController: PhotoDetailCellDelegate {
     
     func likeButtonTapped(cell: PhotoDetaillViewCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
-        let isLiked = viewModel.photos[indexPath.row].likedByUser
+        let photo = viewModel.photos[indexPath.row]
+        let isLiked = !UserDefaults.standard.isLiked(photoId: photo.id)
+        UserDefaults.standard.setLikedState(isLiked, photo.id)
         
-        viewModel.toggleLikedState(index: indexPath.row)
         cell.toggleLikeButton(isLiked: isLiked)
     }
 }
