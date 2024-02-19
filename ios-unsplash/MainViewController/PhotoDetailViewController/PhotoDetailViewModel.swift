@@ -27,4 +27,8 @@ final class PhotoDetailViewModel {
     func toggleUIElementsVisibility() {
         isUIElementsHidden.toggle()
     }
+    
+    func toggleLikedState(index: Int) {
+        photos[index].likedByUser.toggle()
+    }
 }

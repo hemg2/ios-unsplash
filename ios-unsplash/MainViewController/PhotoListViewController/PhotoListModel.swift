@@ -23,7 +23,7 @@ struct Photo: Decodable {
     let urls: PhotoURLs
     let links: PhotoLinks
     let likes: Int
-    let likedByUser: Bool
+    var likedByUser: Bool
     let currentUserCollections: [String]
     let sponsorship: Sponsorship?
     let user: User

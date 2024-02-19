@@ -117,7 +117,7 @@ final class PhotoDetailViewController: UIViewController, ShareDisplayable {
 }
 
 // MARK: Action
-extension PhotoDetailViewController {
+extension PhotoDetailViewController: PhotoDetailCellDelegate {
     @objc private func handleTap() {
         viewModel.toggleUIElementsVisibility()
         updateUIVisibility(shouldHide: viewModel.isUIElementsHidden)
@@ -152,6 +152,14 @@ extension PhotoDetailViewController {
         let photo = viewModel.photos[visibleIndexPath.row]
         title = photo.user.name
     }
+    
+    func likeButtonTapped(cell: PhotoDetaillViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        let isLiked = viewModel.photos[indexPath.row].likedByUser
+        
+        viewModel.toggleLikedState(index: indexPath.row)
+        cell.toggleLikeButton(isLiked: isLiked)
+    }
 }
 
 // MARK: UICollectionViewDataSource
@@ -167,6 +175,8 @@ extension PhotoDetailViewController: UICollectionViewDataSource  {
         }
         
         cell.configure(photo: photo, isUIElementsHidden: viewModel.isUIElementsHidden)
+        cell.delegate = self
+        
         return cell
     }
 }

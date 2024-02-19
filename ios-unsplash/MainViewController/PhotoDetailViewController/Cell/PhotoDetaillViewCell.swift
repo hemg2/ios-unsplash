@@ -8,9 +8,14 @@
 import UIKit
 import Combine
 
+protocol PhotoDetailCellDelegate: AnyObject {
+    func likeButtonTapped(cell: PhotoDetaillViewCell)
+}
+
 final class PhotoDetaillViewCell: UICollectionViewCell {
     
     private var cancellable: AnyCancellable?
+    weak var delegate: PhotoDetailCellDelegate?
     
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -25,7 +30,6 @@ final class PhotoDetaillViewCell: UICollectionViewCell {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "heart"), for: .normal)
-        button.backgroundColor = .black
         button.tintColor = .white
         button.layer.cornerRadius = 25
         button.clipsToBounds = true
@@ -44,7 +48,6 @@ final class PhotoDetaillViewCell: UICollectionViewCell {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "plus"), for: .normal)
-        button.backgroundColor = .black
         button.tintColor = .white
         button.layer.cornerRadius = 25
         button.clipsToBounds = true
@@ -85,6 +88,7 @@ final class PhotoDetaillViewCell: UICollectionViewCell {
         
         setupContents()
         setupContentViewLayout()
+        setupLikedButton()
     }
     
     required init?(coder: NSCoder) {
@@ -98,6 +102,7 @@ final class PhotoDetaillViewCell: UICollectionViewCell {
         photoImageView.image = nil
         loadingIndicator.stopAnimating()
         likeButton.isHidden = false
+        likeButton.tintColor = .white
         addButton.isHidden = false
         downloadButton.isHidden = false
     }
@@ -128,6 +133,14 @@ final class PhotoDetaillViewCell: UICollectionViewCell {
             loadingIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
+    
+    private func setupLikedButton() {
+        let likeButtonAction = UIAction { [weak self] _ in
+            guard let self else { return }
+            self.delegate?.likeButtonTapped(cell: self)
+        }
+        likeButton.addAction(likeButtonAction, for: .touchUpInside)
+    }
 }
 
 extension PhotoDetaillViewCell {
@@ -137,6 +150,7 @@ extension PhotoDetaillViewCell {
         if let photoURL = URL(string: photo.urls.small) {
             cancellable = photoImageView.loadImage(from: photoURL)
             loadingIndicator.stopAnimating()
+            toggleLikeButton(isLiked: photo.likedByUser)
         }
     }
     
@@ -146,5 +160,11 @@ extension PhotoDetaillViewCell {
             self.addButton.alpha = shouldHide ? 0 : 1
             self.downloadButton.alpha = shouldHide ? 0 : 1
         }
+    }
+    
+    func toggleLikeButton(isLiked: Bool) {
+        let imageName = isLiked ? "heart.fill" : "heart"
+        likeButton.setImage(UIImage(systemName: imageName), for: .normal)
+        likeButton.tintColor = isLiked ? .red : .white
     }
 }

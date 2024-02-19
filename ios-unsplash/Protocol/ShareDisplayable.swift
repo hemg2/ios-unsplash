@@ -2,7 +2,7 @@
 //  ShareDisplayable.swift
 //  ios-unsplash
 //
-//  Created by 1 on 2/16/24.
+//  Created by Hemg on 2/16/24.
 //
 
 import UIKit
