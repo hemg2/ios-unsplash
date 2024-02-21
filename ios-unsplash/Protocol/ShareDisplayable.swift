@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol ShareDisplayable: AnyObject {
+protocol ShareDisplayable {
     func sharePhto(_ photo: Photo)
 }
 
