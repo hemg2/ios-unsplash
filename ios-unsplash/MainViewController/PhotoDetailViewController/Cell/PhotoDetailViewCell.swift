@@ -9,10 +9,10 @@ import UIKit
 import Combine
 
 protocol PhotoDetailCellDelegate: AnyObject {
-    func likeButtonTapped(cell: PhotoDetaillViewCell)
+    func likeButtonTapped(cell: PhotoDetailViewCell)
 }
 
-final class PhotoDetaillViewCell: UICollectionViewCell {
+final class PhotoDetailViewCell: UICollectionViewCell {
     
     private var cancellable: AnyCancellable?
     weak var delegate: PhotoDetailCellDelegate?
@@ -143,7 +143,7 @@ final class PhotoDetaillViewCell: UICollectionViewCell {
     }
 }
 
-extension PhotoDetaillViewCell {
+extension PhotoDetailViewCell {
     func configure(photo: Photo, isUIElementsHidden: Bool) {
         toggleUIElements(shouldHide: isUIElementsHidden)
         loadingIndicator.startAnimating()

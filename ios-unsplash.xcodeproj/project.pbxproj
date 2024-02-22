@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		633F8E082B7C77BC00B92ADC /* PhotoDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633F8E072B7C77BC00B92ADC /* PhotoDetailViewModel.swift */; };
-		633F8E0B2B7CFD0B00B92ADC /* PhotoDetaillViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633F8E0A2B7CFD0B00B92ADC /* PhotoDetaillViewCell.swift */; };
+		633F8E0B2B7CFD0B00B92ADC /* PhotoDetailViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633F8E0A2B7CFD0B00B92ADC /* PhotoDetailViewCell.swift */; };
 		633F8E102B7F26EE00B92ADC /* ShareDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633F8E0F2B7F26EE00B92ADC /* ShareDisplayable.swift */; };
 		633F8E122B8324DC00B92ADC /* UserDefaults+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633F8E112B8324DB00B92ADC /* UserDefaults+extension.swift */; };
 		639F549D2B7754F900F56F9F /* PhotoListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639F549C2B7754F900F56F9F /* PhotoListViewModelTests.swift */; };
@@ -62,7 +62,7 @@
 
 /* Begin PBXFileReference section */
 		633F8E072B7C77BC00B92ADC /* PhotoDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewModel.swift; sourceTree = "<group>"; };
-		633F8E0A2B7CFD0B00B92ADC /* PhotoDetaillViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetaillViewCell.swift; sourceTree = "<group>"; };
+		633F8E0A2B7CFD0B00B92ADC /* PhotoDetailViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewCell.swift; sourceTree = "<group>"; };
 		633F8E0F2B7F26EE00B92ADC /* ShareDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDisplayable.swift; sourceTree = "<group>"; };
 		633F8E112B8324DB00B92ADC /* UserDefaults+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+extension.swift"; sourceTree = "<group>"; };
 		639F549A2B7754F900F56F9F /* PhotoListViewModelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotoListViewModelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,7 +130,7 @@
 		633F8E092B7CFCFB00B92ADC /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				633F8E0A2B7CFD0B00B92ADC /* PhotoDetaillViewCell.swift */,
+				633F8E0A2B7CFD0B00B92ADC /* PhotoDetailViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -495,7 +495,7 @@
 				633F8E122B8324DC00B92ADC /* UserDefaults+extension.swift in Sources */,
 				63BB60442B6FCC89002A4F8F /* SceneDelegate.swift in Sources */,
 				63BB60A12B74C38D002A4F8F /* Array+extension.swift in Sources */,
-				633F8E0B2B7CFD0B00B92ADC /* PhotoDetaillViewCell.swift in Sources */,
+				633F8E0B2B7CFD0B00B92ADC /* PhotoDetailViewCell.swift in Sources */,
 				63BB609C2B748FFA002A4F8F /* UnsplashRepository.swift in Sources */,
 				63BB60912B748791002A4F8F /* APIError.swift in Sources */,
 			);

@@ -8,11 +8,11 @@
 import UIKit
 
 protocol ShareDisplayable {
-    func sharePhto(_ photo: Photo)
+    func sharePhoto(_ photo: Photo)
 }
 
 extension ShareDisplayable where Self: UIViewController {
-    func sharePhto(_ photo: Photo) {
+    func sharePhoto(_ photo: Photo) {
         guard let url = URL(string: photo.urls.small) else { return }
                let text = "Photo by \(photo.user.name) on Unsplash"
                let activityItems: [Any] = [text, url]
