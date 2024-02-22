@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class PhotoDetailViewController: UIViewController, ShareDisplayable {
+final class PhotoDetailViewController: UIViewController, ShareDisplayable, UINavigationControllerDelegate {
     
     var photo: Photo?
     private var viewModel: PhotoDetailViewModel
@@ -39,6 +39,18 @@ final class PhotoDetailViewController: UIViewController, ShareDisplayable {
         scrollToSelectedPhoto()
         setupTapGesture()
         bindViewModel()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.delegate = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if navigationController?.delegate === self {
+            navigationController?.delegate = nil
+        }
     }
     
     init(viewModel: PhotoDetailViewModel) {
@@ -90,8 +102,14 @@ final class PhotoDetailViewController: UIViewController, ShareDisplayable {
     }
     
     private func setupTapGesture() {
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        let swipeDonw = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+        
         view.addGestureRecognizer(tapGesture)
+        view.addGestureRecognizer(swipeDonw)
     }
     
     private func bindViewModel() {
@@ -121,6 +139,31 @@ extension PhotoDetailViewController: PhotoDetailCellDelegate {
     @objc private func handleTap() {
         viewModel.toggleUIElementsVisibility()
         updateUIVisibility(shouldHide: viewModel.isUIElementsHidden)
+    }
+    
+    @objc private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: view)
+        
+        switch gesture.state {
+        case .changed:
+            if translation.y > 0 {
+                view.transform = CGAffineTransform(translationX: 0, y: translation.y)
+            }
+        case .ended, .cancelled:
+            if translation.y > 50 {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.view.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
+                }) { _ in
+                    self.navigationController?.popViewController(animated: false)
+                }
+            } else {
+                UIView.animate(withDuration: 0.3) {
+                    self.view.transform = .identity
+                }
+            }
+        default:
+            break
+        }
     }
     
     private func updateUIVisibility(shouldHide: Bool) {
