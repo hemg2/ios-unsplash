@@ -8,9 +8,10 @@
 import UIKit
 import Combine
 
-final class PhotoDetailViewController: UIViewController, ShareDisplayable, UINavigationControllerDelegate {
+final class PhotoDetailViewController: UIViewController, ShareDisplayable {
     
     var photo: Photo?
+    var backgroundSnapshotView: UIView?
     private var viewModel: PhotoDetailViewModel
     var cancellables: Set<AnyCancellable> = []
     
@@ -43,14 +44,8 @@ final class PhotoDetailViewController: UIViewController, ShareDisplayable, UINav
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.delegate = self
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if navigationController?.delegate === self {
-            navigationController?.delegate = nil
-        }
+        
+        configureSnapshotView()
     }
     
     init(viewModel: PhotoDetailViewModel) {
@@ -72,6 +67,13 @@ final class PhotoDetailViewController: UIViewController, ShareDisplayable, UINav
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
+    }
+    
+    private func configureSnapshotView() {
+        if let snapshotView = backgroundSnapshotView {
+            snapshotView.frame = self.view.bounds
+            view.insertSubview(snapshotView, at: 0)
+        }
     }
     
     private func setupNavigationBarUI() {
@@ -99,6 +101,13 @@ final class PhotoDetailViewController: UIViewController, ShareDisplayable, UINav
         
         let shareButton = UIBarButtonItem(primaryAction: shareAction)
         navigationItem.rightBarButtonItem = shareButton
+    }
+    
+    private func addBackgroundSnapshotView() {
+        guard let snapshot = navigationController?.view.snapshotView(afterScreenUpdates: true) else { return }
+        snapshot.frame = navigationController!.view.frame
+        self.view.insertSubview(snapshot, at: 0)
+        backgroundSnapshotView = snapshot
     }
     
     private func setupTapGesture() {
@@ -143,22 +152,31 @@ extension PhotoDetailViewController: PhotoDetailCellDelegate {
     
     @objc private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
         let translation = gesture.translation(in: view)
+        let percentage = translation.y / view.bounds.height
+        let scale = max(0.4, 1 - percentage)
         
         switch gesture.state {
+        case .began:
+            backgroundSnapshotView?.removeFromSuperview()
+            configureSnapshotView()
+            addBackgroundSnapshotView()
         case .changed:
-            if translation.y > 0 {
-                view.transform = CGAffineTransform(translationX: 0, y: translation.y)
-            }
+            let translationTransform = CGAffineTransform(translationX: 0, y: max(0, translation.y))
+            collectionView.transform = translationTransform
+            collectionView.alpha = 1 - percentage
         case .ended, .cancelled:
             if translation.y > 50 {
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: 0.25, animations: {
                     self.view.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
                 }) { _ in
                     self.navigationController?.popViewController(animated: false)
+                    self.backgroundSnapshotView?.removeFromSuperview()
                 }
             } else {
-                UIView.animate(withDuration: 0.3) {
+                UIView.animate(withDuration: 0.25) {
                     self.view.transform = .identity
+                } completion: { _ in
+                    self.backgroundSnapshotView?.removeFromSuperview()
                 }
             }
         default:
