@@ -45,6 +45,30 @@ final class PhotoListViewController: UIViewController {
         return refreshControl
     }()
     
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.backgroundColor = .clear
+        return scrollView
+    }()
+    
+    private lazy var segmentedControl: UISegmentedControl = {
+        let items = ["보도/편집", "배경 화면", "쿨 톤", "자연", "3D 렌더링", "여행하다", "건축 및 인테리어"]
+        let control = UISegmentedControl(items: items)
+        control.selectedSegmentIndex = 0
+        control.backgroundColor = .clear
+        
+        let action = UIAction { [weak self] (action) in
+            if let segment = action.sender as? UISegmentedControl {
+                self?.segmentChanged(to: segment.selectedSegmentIndex)
+            }
+        }
+        
+        control.addAction(action, for: .valueChanged)
+        control.translatesAutoresizingMaskIntoConstraints = false
+        return control
+    }()
+    
     init(viewModel: PhotoListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -60,6 +84,7 @@ final class PhotoListViewController: UIViewController {
         configureUI()
         setupNavigationBar()
         setupCollectionView()
+        setupSegmentedControl()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -134,6 +159,29 @@ final class PhotoListViewController: UIViewController {
                 }
             }
             .store(in: &cancellables)
+    }
+    
+    private func setupSegmentedControl() {
+        view.addSubview(scrollView)
+        scrollView.addSubview(segmentedControl)
+        
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            scrollView.heightAnchor.constraint(equalTo: segmentedControl.heightAnchor),
+            
+            segmentedControl.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            segmentedControl.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            segmentedControl.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            segmentedControl.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            segmentedControl.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
+        ])
+    }
+    
+    private func segmentChanged(to index: Int) {
+        viewModel.loadPhotos()
+        print("불리냐?")
     }
 }
 
