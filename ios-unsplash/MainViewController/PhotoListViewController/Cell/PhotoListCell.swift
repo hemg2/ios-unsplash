@@ -73,17 +73,13 @@ final class PhotoListCell: UICollectionViewCell {
             photoImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             photoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             photoImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            photoImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
+            photoImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            
             photoImageLabel.leadingAnchor.constraint(equalTo: photoImageView.leadingAnchor, constant: 10),
-            photoImageLabel.bottomAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: -10)
-        ])
-        
-        NSLayoutConstraint.activate([
+            photoImageLabel.bottomAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: -10),
+            
             loadingIndicator.centerXAnchor.constraint(equalTo: photoImageView.centerXAnchor),
-            loadingIndicator.centerYAnchor.constraint(equalTo: photoImageView.centerYAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: photoImageView.centerYAnchor)
         ])
     }
     
@@ -93,6 +89,6 @@ final class PhotoListCell: UICollectionViewCell {
             cancellable = photoImageView.loadImage(from: photoURL)
             self.photoImageLabel.text = photo.user.name
             loadingIndicator.stopAnimating()
-        } 
+        }
     }
 }
