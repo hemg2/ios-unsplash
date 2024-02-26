@@ -58,4 +58,41 @@ final class PhotoListViewModel {
             })
             .store(in: &self.cancellables)
     }
+    
+    func searchLoadPhotos(query: String, isRefresh: Bool = false) {
+        guard !isLoading else { return }
+        
+        if isRefresh {
+            pageNumber = 1
+        } else {
+            pageNumber += 1
+        }
+        
+        isLoading = true
+        
+        repository.searchPhotos(query: query, page: pageNumber)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                self.isLoading = false
+                
+                switch completion {
+                case .failure(let error):
+                    self.onError?(error)
+                case .finished:
+                    break
+                }
+            }, receiveValue: { [weak self] newPhotos in
+                guard let self = self else { return }
+                
+                if isRefresh {
+                    self.photos = newPhotos.results
+                } else {
+                    self.photos.append(contentsOf: newPhotos.results)
+                }
+                
+                self.isLastPage = newPhotos.results.isEmpty
+            })
+            .store(in: &self.cancellables)
+    }
 }

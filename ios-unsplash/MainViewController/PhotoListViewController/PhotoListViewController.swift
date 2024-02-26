@@ -155,6 +155,7 @@ final class PhotoListViewController: UIViewController {
     }
 }
 
+// MARK: PhotoListTitleViewControllerDelegate
 extension PhotoListViewController: PhotoListTitleViewControllerDelegate {
     func categoryDidSelect(at index: Int) {
         categoryView?.scrollToButton(at: index)
