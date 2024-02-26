@@ -226,7 +226,11 @@ extension PhotoListViewController: UICollectionViewDataSourcePrefetching {
         }
         
         if maxRow >= viewModel.photos.count - 1 {
-            viewModel.loadPhotos()
+            if let searchQuery = viewModel.currentSearchQuery {
+                viewModel.searchLoadPhotos(query: searchQuery, isRefresh: false)
+            } else {
+                viewModel.loadPhotos()
+            }
         }
     }
 }

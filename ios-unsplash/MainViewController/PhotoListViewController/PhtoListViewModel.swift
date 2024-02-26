@@ -17,6 +17,7 @@ final class PhotoListViewModel {
     var cancellables: Set<AnyCancellable> = []
     var pageNumber: Int = 0
     var isLastPage: Bool = false
+    var currentSearchQuery: String?
     let category = ["Report/Editing", "Wallpaper", "Cool Tones", "Nature", "Travel", "Architecture and interiors", "Street Photography", "Film", "People"]
     
     init(repository: UnsplashRepository) {
@@ -65,6 +66,7 @@ final class PhotoListViewModel {
         
         if isRefresh {
             pageNumber = 1
+            currentSearchQuery = query
         } else {
             pageNumber += 1
         }
