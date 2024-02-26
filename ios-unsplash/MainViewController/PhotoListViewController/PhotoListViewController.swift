@@ -11,7 +11,7 @@ import Combine
 final class PhotoListViewController: UIViewController {
     
     private let viewModel: PhotoListViewModel
-    var cancellables: Set<AnyCancellable> = []
+    private var cancellables: Set<AnyCancellable> = []
     private var categoryView: PhotoListTitleViewContoller?
     
     private lazy var collectionView: UICollectionView = {
@@ -106,7 +106,6 @@ final class PhotoListViewController: UIViewController {
         collectionView.prefetchDataSource = self
         collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.refreshControl = refreshControl
-        
         collectionView.reloadData()
     }
     
