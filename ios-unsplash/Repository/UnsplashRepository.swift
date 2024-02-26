@@ -10,6 +10,7 @@ import Combine
 
 protocol UnsplashRepository {
     func fetchPhotos(page: Int) -> AnyPublisher<[Photo], Error>
+    func searchPhotos(query: String, page: Int) -> AnyPublisher<SearchResponse, Error>
 }
 
 final class UnsplashRepositoryImplementation: UnsplashRepository {
@@ -30,6 +31,17 @@ final class UnsplashRepositoryImplementation: UnsplashRepository {
         
         return sessionProvider.requestData(url: url, header: nil)
             .decode(type: [Photo].self, decoder: decoder)
+            .eraseToAnyPublisher()
+    }
+    
+    func searchPhotos(query: String, page: Int) -> AnyPublisher<SearchResponse, Error> {
+        let endPoint = UnsplashEndPoint()
+        guard let url = endPoint.searchURL(query: query, pageNumber: page) else {
+            return Fail(error: APIError.invalidURL).eraseToAnyPublisher()
+        }
+        
+        return sessionProvider.requestData(url: url, header: nil)
+            .decode(type: SearchResponse.self, decoder: decoder)
             .eraseToAnyPublisher()
     }
 }
