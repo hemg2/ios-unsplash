@@ -161,9 +161,14 @@ extension PhotoListViewController: PhotoListTitleViewControllerDelegate {
         let category = viewModel.category[index]
         viewModel.photos.removeAll()
         collectionView.reloadData()
-        viewModel.searchLoadPhotos(query: category, isRefresh: true)
         categoryView?.scrollToButton(at: index)
         categoryView?.highlightButton(at: index)
+        
+        if index == 0 {
+            viewModel.loadPhotos(isRefresh: true)
+        } else {
+            viewModel.searchLoadPhotos(query: category, isRefresh: true)
+        }
     }
 }
 
