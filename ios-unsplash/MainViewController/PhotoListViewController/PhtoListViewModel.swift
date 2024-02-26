@@ -17,6 +17,7 @@ final class PhotoListViewModel {
     var cancellables: Set<AnyCancellable> = []
     var pageNumber: Int = 0
     var isLastPage: Bool = false
+    let category = ["Report/Editing", "Wallpaper", "Cool Tones", "Nature", "Travel", "Architecture and interiors", "Street Photography", "Film", "People"]
     
     init(repository: UnsplashRepository) {
         self.repository = repository

@@ -158,9 +158,12 @@ final class PhotoListViewController: UIViewController {
 // MARK: PhotoListTitleViewControllerDelegate
 extension PhotoListViewController: PhotoListTitleViewControllerDelegate {
     func categoryDidSelect(at index: Int) {
+        let category = viewModel.category[index]
+        viewModel.photos.removeAll()
+        collectionView.reloadData()
+        viewModel.searchLoadPhotos(query: category, isRefresh: true)
         categoryView?.scrollToButton(at: index)
         categoryView?.highlightButton(at: index)
-        print("\(index)")
     }
 }
 

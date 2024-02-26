@@ -26,7 +26,7 @@ final class PhotoListTitleViewContoller: UIViewController {
     }()
     
     private var buttons = [UIButton]()
-    private let items = ["보도/편집", "배경 화면", "쿨 톤", "자연", "3D 렌더링", "여행하다", "건축 및 인테리어"]
+    private let items = ["보도/편집", "배경 화면", "쿨 톤", "자연", "여행하다", "건축 및 인테리어", "거리 사진", "필름", "사람"]
     
     init(viewModel: PhotoListViewModel) {
         self.viewModel = viewModel
@@ -101,7 +101,7 @@ final class PhotoListTitleViewContoller: UIViewController {
         offset = max(min(offset, scrollView.contentSize.width - scrollView.bounds.size.width), 0)
         scrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
     }
-
+    
     func highlightButton(at index: Int) {
         buttons.forEach { button in
             button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
