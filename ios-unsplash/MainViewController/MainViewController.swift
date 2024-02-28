@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 final class MainViewController: UITabBarController {
     let viewModel: PhotoListViewModel
@@ -46,7 +47,7 @@ final class MainViewController: UITabBarController {
                                              image: UIImage(systemName: "photo"),
                                              selectedImage: UIImage(systemName: "photo.fill"))
         
-        let searchVC = SearchViewController()
+        let searchVC = UIHostingController(rootView: SearchView())
         searchVC.tabBarItem = UITabBarItem(title: "",
                                            image: UIImage(systemName: "magnifyingglass"),
                                            selectedImage: UIImage(systemName: "magnifyingglass.fill"))
