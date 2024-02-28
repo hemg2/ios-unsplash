@@ -8,7 +8,18 @@
 import UIKit
 import Combine
 
-final class PhotoListViewModel {
+protocol PhotoListViewModelInput {
+    func loadPhotos(isRefresh: Bool)
+    func searchLoadPhotos(query: String, isRefresh: Bool)
+}
+
+protocol PhotoListViewModelOutput {
+    var photos: [Photo] { get }
+    var isLoading: Bool { get }
+    var onError: ((Error) -> Void)? { get }
+}
+
+final class PhotoListViewModel: PhotoListViewModelInput, PhotoListViewModelOutput {
     
     private let repository: UnsplashRepository
     @Published var photos: [Photo] = []
@@ -61,7 +72,7 @@ final class PhotoListViewModel {
             .store(in: &self.cancellables)
     }
     
-    func searchLoadPhotos(query: String, isRefresh: Bool = false) {
+    func searchLoadPhotos(query: String, isRefresh: Bool) {
         guard !isLoading else { return }
         
         if isRefresh {
