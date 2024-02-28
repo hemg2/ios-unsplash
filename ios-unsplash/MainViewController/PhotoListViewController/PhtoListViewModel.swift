@@ -8,14 +8,28 @@
 import UIKit
 import Combine
 
-final class PhotoListViewModel {
+protocol PhotoListViewModelInput {
+    func loadPhotos(isRefresh: Bool)
+    func searchLoadPhotos(query: String, isRefresh: Bool)
+}
+
+protocol PhotoListViewModelOutput {
+    var photos: [Photo] { get }
+    var isLoading: Bool { get }
+    var onError: ((Error) -> Void)? { get }
+}
+
+final class PhotoListViewModel: PhotoListViewModelInput, PhotoListViewModelOutput {
+    
     private let repository: UnsplashRepository
     @Published var photos: [Photo] = []
     @Published var isLoading: Bool = false
-    @Published var onError: ((Error) -> Void)?
+    var onError: ((Error) -> Void)?
     var cancellables: Set<AnyCancellable> = []
     var pageNumber: Int = 0
     var isLastPage: Bool = false
+    var currentSearchQuery: String?
+    let category = ["Report/Editing", "Wallpaper", "Cool Tones", "Nature", "Travel", "Architecture and interiors", "Street Photography", "Film", "People"]
     
     init(repository: UnsplashRepository) {
         self.repository = repository
@@ -54,6 +68,44 @@ final class PhotoListViewModel {
                 }
                 
                 self.isLastPage = newPhotos.isEmpty
+            })
+            .store(in: &self.cancellables)
+    }
+    
+    func searchLoadPhotos(query: String, isRefresh: Bool) {
+        guard !isLoading else { return }
+        
+        if isRefresh {
+            pageNumber = 1
+            currentSearchQuery = query
+        } else {
+            pageNumber += 1
+        }
+        
+        isLoading = true
+        
+        repository.searchPhotos(query: query, page: pageNumber)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                self.isLoading = false
+                
+                switch completion {
+                case .failure(let error):
+                    self.onError?(error)
+                case .finished:
+                    break
+                }
+            }, receiveValue: { [weak self] newPhotos in
+                guard let self = self else { return }
+                
+                if isRefresh {
+                    self.photos = newPhotos.results
+                } else {
+                    self.photos.append(contentsOf: newPhotos.results)
+                }
+                
+                self.isLastPage = newPhotos.results.isEmpty
             })
             .store(in: &self.cancellables)
     }

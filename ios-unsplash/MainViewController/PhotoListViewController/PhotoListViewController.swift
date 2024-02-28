@@ -8,10 +8,11 @@
 import UIKit
 import Combine
 
-final class PhotoListViewController: UIViewController {
+final class PhotoListViewController: UIViewController, AlertPresentable {
     
     private let viewModel: PhotoListViewModel
-    var cancellables: Set<AnyCancellable> = []
+    private var cancellables: Set<AnyCancellable> = []
+    private var categoryView: PhotoListTitleViewContoller?
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -60,6 +61,7 @@ final class PhotoListViewController: UIViewController {
         configureUI()
         setupNavigationBar()
         setupCollectionView()
+        setupCategoryView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -104,7 +106,6 @@ final class PhotoListViewController: UIViewController {
         collectionView.prefetchDataSource = self
         collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.refreshControl = refreshControl
-        
         collectionView.reloadData()
     }
     
@@ -134,6 +135,46 @@ final class PhotoListViewController: UIViewController {
                 }
             }
             .store(in: &cancellables)
+        viewModel.onError = { [weak self] error in
+            DispatchQueue.main.async {
+                self?.showAlert(title: "에러가 발생했습니다.", message: error.localizedDescription) {
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            }
+        }
+    }
+    
+    private func setupCategoryView() {
+        categoryView = PhotoListTitleViewContoller(viewModel: viewModel)
+        guard let categoryView else { return }
+        view.addSubview(categoryView.view)
+        addChild(categoryView)
+        categoryView.view.translatesAutoresizingMaskIntoConstraints = false
+        categoryView.delegate = self
+        categoryView.didMove(toParent: self)
+        
+        NSLayoutConstraint.activate([
+            categoryView.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            categoryView.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            categoryView.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+        ])
+    }
+}
+
+// MARK: PhotoListTitleViewControllerDelegate
+extension PhotoListViewController: PhotoListTitleViewControllerDelegate {
+    func categoryDidSelect(at index: Int) {
+        let category = viewModel.category[index]
+        viewModel.photos.removeAll()
+        collectionView.reloadData()
+        categoryView?.scrollToButton(at: index)
+        categoryView?.highlightButton(at: index)
+        
+        if index == 0 {
+            viewModel.loadPhotos(isRefresh: true)
+        } else {
+            viewModel.searchLoadPhotos(query: category, isRefresh: true)
+        }
     }
 }
 
@@ -171,8 +212,10 @@ extension PhotoListViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         guard let photo = viewModel.photos[safe: indexPath.row] else { return }
+        guard let snapshot = self.view.snapshotView(afterScreenUpdates: true) else { return }
         let detailViewModel = PhotoDetailViewModel(photos: viewModel.photos, currentIndex: indexPath.row)
         let detailView = PhotoDetailViewController(viewModel: detailViewModel)
+        detailView.backgroundSnapshotView = snapshot
         detailView.photo = photo
         detailView.title = photo.user.name
         detailView.hidesBottomBarWhenPushed = true
@@ -189,7 +232,11 @@ extension PhotoListViewController: UICollectionViewDataSourcePrefetching {
         }
         
         if maxRow >= viewModel.photos.count - 1 {
-            viewModel.loadPhotos()
+            if let searchQuery = viewModel.currentSearchQuery {
+                viewModel.searchLoadPhotos(query: searchQuery, isRefresh: false)
+            } else {
+                viewModel.loadPhotos()
+            }
         }
     }
 }

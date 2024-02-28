@@ -8,11 +8,13 @@
 import UIKit
 import Combine
 
-final class PhotoDetailViewController: UIViewController {
+final class PhotoDetailViewController: UIViewController, ShareDisplayable {
     
     var photo: Photo?
+    var backgroundSnapshotView: UIView?
     private var viewModel: PhotoDetailViewModel
     var cancellables: Set<AnyCancellable> = []
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -33,7 +35,7 @@ final class PhotoDetailViewController: UIViewController {
         
         configureUI()
         setupCollectionView()
-        setupNavigationBarUI()
+        configureNavigationBarUI()
         setupShareButton()
         scrollToSelectedPhoto()
         setupTapGesture()
@@ -61,7 +63,14 @@ final class PhotoDetailViewController: UIViewController {
         ])
     }
     
-    private func setupNavigationBarUI() {
+    private func configureSnapshotView() {
+        if let snapshotView = backgroundSnapshotView {
+            snapshotView.frame = self.view.bounds
+            view.insertSubview(snapshotView, at: 0)
+        }
+    }
+    
+    private func configureNavigationBarUI() {
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .black
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
@@ -71,15 +80,17 @@ final class PhotoDetailViewController: UIViewController {
     private func setupCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(PhotoDetaillViewCell.self, forCellWithReuseIdentifier: "Detailcell")
+        collectionView.register(PhotoDetailViewCell.self, forCellWithReuseIdentifier: "Detailcell")
         
         collectionView.reloadData()
     }
     
     private func setupShareButton() {
         let image = UIImage(systemName: "square.and.arrow.up")
-        let shareAction = UIAction(title: "", image: image) { action in
-            // 버튼 액션
+        let shareAction = UIAction(title: "", image: image) { [weak self] action in
+            guard let self else { return }
+            let currentPhoto = self.viewModel.photos[self.viewModel.currentIndex]
+            self.sharePhoto(currentPhoto)
         }
         
         let shareButton = UIBarButtonItem(primaryAction: shareAction)
@@ -87,8 +98,14 @@ final class PhotoDetailViewController: UIViewController {
     }
     
     private func setupTapGesture() {
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        let swipeDown = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+        
         view.addGestureRecognizer(tapGesture)
+        view.addGestureRecognizer(swipeDown)
     }
     
     private func bindViewModel() {
@@ -114,17 +131,46 @@ final class PhotoDetailViewController: UIViewController {
 }
 
 // MARK: Action
-extension PhotoDetailViewController {
+extension PhotoDetailViewController: PhotoDetailCellDelegate {
     @objc private func handleTap() {
         viewModel.toggleUIElementsVisibility()
         updateUIVisibility(shouldHide: viewModel.isUIElementsHidden)
+    }
+    
+    @objc private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: view)
+        let percentage = translation.y / view.bounds.height
+        
+        switch gesture.state {
+        case .began:
+            backgroundSnapshotView?.removeFromSuperview()
+            configureSnapshotView()
+        case .changed:
+            collectionView.transform = CGAffineTransform(translationX: 0, y: max(0, translation.y))
+            collectionView.alpha = 1 - percentage
+        case .ended, .cancelled:
+            if translation.y > 4 {
+                UIView.animate(withDuration: 0.25, animations: {
+                    self.view.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
+                }) { [weak self] _ in
+                    self?.navigationController?.popViewController(animated: false)
+                    self?.backgroundSnapshotView?.removeFromSuperview()
+                }
+            } else {
+                UIView.animate(withDuration: 0.25) {
+                    self.view.transform = .identity
+                }
+            }
+        default:
+            break
+        }
     }
     
     private func updateUIVisibility(shouldHide: Bool) {
         UIView.animate(withDuration: 0.25) {
             self.navigationController?.navigationBar.alpha = shouldHide ? 0 : 1
             self.collectionView.visibleCells.forEach { cell in
-                if let photoCell = cell as? PhotoDetaillViewCell {
+                if let photoCell = cell as? PhotoDetailViewCell {
                     photoCell.toggleUIElements(shouldHide: shouldHide)
                 }
             }
@@ -149,6 +195,15 @@ extension PhotoDetailViewController {
         let photo = viewModel.photos[visibleIndexPath.row]
         title = photo.user.name
     }
+    
+    func likeButtonTapped(cell: PhotoDetailViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        let photo = viewModel.photos[indexPath.row]
+        let isLiked = !UserDefaults.standard.isLiked(photoId: photo.id)
+        UserDefaults.standard.setLikedState(isLiked, photo.id)
+        
+        cell.toggleLikeButton(isLiked: isLiked)
+    }
 }
 
 // MARK: UICollectionViewDataSource
@@ -158,12 +213,14 @@ extension PhotoDetailViewController: UICollectionViewDataSource  {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Detailcell", for: indexPath) as? PhotoDetaillViewCell,
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Detailcell", for: indexPath) as? PhotoDetailViewCell,
               let photo = viewModel.photos[safe: indexPath.row] else {
             return UICollectionViewCell()
         }
         
         cell.configure(photo: photo, isUIElementsHidden: viewModel.isUIElementsHidden)
+        cell.delegate = self
+        
         return cell
     }
 }
@@ -183,7 +240,7 @@ extension PhotoDetailViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        for cell in collectionView.visibleCells as! [PhotoDetaillViewCell] {
+        for cell in collectionView.visibleCells as! [PhotoDetailViewCell] {
             if let indexPath = collectionView.indexPath(for: cell) {
                 let photo = viewModel.photos[indexPath.row]
                 cell.configure(photo: photo, isUIElementsHidden: viewModel.isUIElementsHidden)

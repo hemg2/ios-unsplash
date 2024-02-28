@@ -9,9 +9,11 @@ import Foundation
 import Combine
 
 final class PhotoDetailViewModel {
+    
     @Published var photos: [Photo]
     @Published var currentIndex: Int
     @Published var isUIElementsHidden: Bool = false
+    
     init(photos: [Photo], currentIndex: Int) {
         self.photos = photos
         self.currentIndex = currentIndex
@@ -24,5 +26,9 @@ final class PhotoDetailViewModel {
     
     func toggleUIElementsVisibility() {
         isUIElementsHidden.toggle()
+    }
+    
+    func toggleLikedState(index: Int) {
+        photos[index].likedByUser.toggle()
     }
 }

@@ -7,6 +7,18 @@
 
 import Foundation
 
+struct SearchResponse: Decodable {
+    let total: Int
+    let totalPages: Int
+    let results: [Photo]
+    
+    enum CodingKeys: String, CodingKey {
+        case total
+        case totalPages = "total_pages"
+        case results
+    }
+}
+
 // 사진 정보를 담는 구조체
 struct Photo: Decodable {
     let id: String
@@ -23,7 +35,7 @@ struct Photo: Decodable {
     let urls: PhotoURLs
     let links: PhotoLinks
     let likes: Int
-    let likedByUser: Bool
+    var likedByUser: Bool
     let currentUserCollections: [String]
     let sponsorship: Sponsorship?
     let user: User
