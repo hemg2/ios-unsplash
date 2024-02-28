@@ -2,7 +2,7 @@
 //  SearchViewController.swift
 //  ios-unsplash
 //
-//  Created by 1 on 2/5/24.
+//  Created by Hemg on 2/5/24.
 //
 
 import SwiftUI
@@ -22,9 +22,9 @@ struct SearchView: View {
                         Text("범주별 찾아보기")
                             .foregroundColor(.white)
                             .padding(.horizontal)
+                        CategoriesView()
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.top)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -54,6 +54,41 @@ struct SearchBar: View {
     }
 }
 
+struct CategoryItem {
+    var naem: String
+    var imageName: String
+}
+
+struct CategoriesView: View {
+    let categories: [CategoryItem] = [
+        CategoryItem(naem: "자연", imageName: "nature"),
+        CategoryItem(naem: "흑백", imageName: "nature"),
+        CategoryItem(naem: "우주", imageName: "nature"),
+        CategoryItem(naem: "텍스처", imageName: "nature"),
+        CategoryItem(naem: "추상적", imageName: "nature"),
+        CategoryItem(naem: "미니멀", imageName: "nature"),
+    ]
+    let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
+    
+    var body: some View {
+        ScrollView {
+            LazyVGrid(columns: columns, spacing: 8) {
+                ForEach(0..<categories.count, id: \.self) { index in
+                    ZStack {
+                        Image(categories[index].imageName)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 100, height: 100)
+                            .clipped()
+                        Text(categories[index].naem)
+                            .foregroundColor(.white)
+                    }
+                }
+            }
+            .padding(.horizontal)
+        }
+    }
+}
 
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
