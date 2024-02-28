@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class PhotoListViewController: UIViewController {
+final class PhotoListViewController: UIViewController, AlertPresentable {
     
     private let viewModel: PhotoListViewModel
     private var cancellables: Set<AnyCancellable> = []
@@ -135,6 +135,13 @@ final class PhotoListViewController: UIViewController {
                 }
             }
             .store(in: &cancellables)
+        viewModel.onError = { [weak self] error in
+            DispatchQueue.main.async {
+                self?.showAlert(title: "에러가 발생했습니다.", message: error.localizedDescription) {
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            }
+        }
     }
     
     private func setupCategoryView() {

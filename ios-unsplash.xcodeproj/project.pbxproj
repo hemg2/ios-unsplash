@@ -12,6 +12,7 @@
 		633F8E102B7F26EE00B92ADC /* ShareDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633F8E0F2B7F26EE00B92ADC /* ShareDisplayable.swift */; };
 		633F8E122B8324DC00B92ADC /* UserDefaults+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633F8E112B8324DB00B92ADC /* UserDefaults+extension.swift */; };
 		633F8E142B8C38EF00B92ADC /* PhotoListTitleViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633F8E132B8C38EF00B92ADC /* PhotoListTitleViewContoller.swift */; };
+		633F8E182B8F0CD700B92ADC /* AlertPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633F8E172B8F0CD700B92ADC /* AlertPresentable.swift */; };
 		639F549D2B7754F900F56F9F /* PhotoListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639F549C2B7754F900F56F9F /* PhotoListViewModelTests.swift */; };
 		63BB60422B6FCC89002A4F8F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60412B6FCC89002A4F8F /* AppDelegate.swift */; };
 		63BB60442B6FCC89002A4F8F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB60432B6FCC89002A4F8F /* SceneDelegate.swift */; };
@@ -67,6 +68,7 @@
 		633F8E0F2B7F26EE00B92ADC /* ShareDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDisplayable.swift; sourceTree = "<group>"; };
 		633F8E112B8324DB00B92ADC /* UserDefaults+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+extension.swift"; sourceTree = "<group>"; };
 		633F8E132B8C38EF00B92ADC /* PhotoListTitleViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListTitleViewContoller.swift; sourceTree = "<group>"; };
+		633F8E172B8F0CD700B92ADC /* AlertPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresentable.swift; sourceTree = "<group>"; };
 		639F549A2B7754F900F56F9F /* PhotoListViewModelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotoListViewModelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		639F549C2B7754F900F56F9F /* PhotoListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListViewModelTests.swift; sourceTree = "<group>"; };
 		63BB603E2B6FCC89002A4F8F /* ios-unsplash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-unsplash.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				633F8E0F2B7F26EE00B92ADC /* ShareDisplayable.swift */,
+				633F8E172B8F0CD700B92ADC /* AlertPresentable.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -483,6 +486,7 @@
 			files = (
 				633F8E082B7C77BC00B92ADC /* PhotoDetailViewModel.swift in Sources */,
 				63BB60992B748AEE002A4F8F /* UnsplashEndPoint.swift in Sources */,
+				633F8E182B8F0CD700B92ADC /* AlertPresentable.swift in Sources */,
 				63BB60782B712F38002A4F8F /* PhotoListViewController.swift in Sources */,
 				63BB609F2B74C138002A4F8F /* UIImageView+extension.swift in Sources */,
 				63BB607E2B724A9E002A4F8F /* PhotoListModel.swift in Sources */,
