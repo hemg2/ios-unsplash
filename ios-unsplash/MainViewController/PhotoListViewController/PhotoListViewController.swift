@@ -61,7 +61,7 @@ final class PhotoListViewController: UIViewController {
         configureUI()
         setupNavigationBar()
         setupCollectionView()
-        sutupCategoryView()
+        setupCategoryView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -137,7 +137,7 @@ final class PhotoListViewController: UIViewController {
             .store(in: &cancellables)
     }
     
-    private func sutupCategoryView() {
+    private func setupCategoryView() {
         categoryView = PhotoListTitleViewContoller(viewModel: viewModel)
         guard let categoryView else { return }
         view.addSubview(categoryView.view)
