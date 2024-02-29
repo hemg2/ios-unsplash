@@ -10,6 +10,7 @@ import SwiftUI
 
 final class MainViewController: UITabBarController {
     let viewModel: PhotoListViewModel
+    let categoriViewModel: CategoriesViewModel
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,8 +20,9 @@ final class MainViewController: UITabBarController {
         setupTabbarConfigureUI()
     }
     
-    init(viewModel: PhotoListViewModel) {
+    init(viewModel: PhotoListViewModel, categoriViewModel: CategoriesViewModel) {
         self.viewModel = viewModel
+        self.categoriViewModel = categoriViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -47,7 +49,7 @@ final class MainViewController: UITabBarController {
                                              image: UIImage(systemName: "photo"),
                                              selectedImage: UIImage(systemName: "photo.fill"))
         
-        let searchVC = UIHostingController(rootView: SearchView())
+        let searchVC = UIHostingController(rootView: SearchView(viewModel: categoriViewModel))
         searchVC.tabBarItem = UITabBarItem(title: "",
                                            image: UIImage(systemName: "magnifyingglass"),
                                            selectedImage: UIImage(systemName: "magnifyingglass.fill"))

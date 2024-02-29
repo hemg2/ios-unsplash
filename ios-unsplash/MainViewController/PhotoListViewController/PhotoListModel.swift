@@ -23,9 +23,9 @@ struct SearchResponse: Decodable {
 struct Photo: Decodable {
     let id: String
     let slug: String?
-    let createdAt: Date
-    let updatedAt: Date
-    let promotedAt: Date?
+    let createdAt: String
+    let updatedAt: String
+    let promotedAt: String?
     let width: Int
     let height: Int
     let color: String
