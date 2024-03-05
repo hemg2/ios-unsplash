@@ -69,35 +69,37 @@ struct CategoriesView: View {
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(0..<viewModel.categories.count, id: \.self) { index in
                     let category = viewModel.categories[index]
-                    ZStack {
-                        if let imageUrl = category.imageUrl {
-                            AsyncImage(url: imageUrl) { image in
-                                image.resizable()
-                                    .scaledToFill()
-                                    .frame(width: 100, height: 100)
-                                    .clipped()
-                            } placeholder: {
+                    NavigationLink(destination: CategoryDetailView(category: category, repository: viewModel.repository)) {
+                        ZStack {
+                            if let imageUrl = category.imageUrl {
+                                AsyncImage(url: imageUrl) { image in
+                                    image.resizable()
+                                        .scaledToFill()
+                                        .frame(width: 100, height: 100)
+                                        .clipped()
+                                } placeholder: {
+                                    Color.gray.opacity(0.3)
+                                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
+                                }
+                            } else {
                                 Color.gray.opacity(0.3)
                                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
                             }
-                        } else {
-                            Color.gray.opacity(0.3)
-                                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
+                            Text(category.name)
+                                .foregroundColor(.white)
+                                .frame(width: 100, height: 100)
+                                .background(Color.black.opacity(0.3))
                         }
-                        Text(category.name)
-                            .foregroundColor(.white)
-                            .frame(width: 100, height: 100)
-                            .background(Color.black.opacity(0.3))
-                    }
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .onAppear() {
-                        if category.imageUrl == nil {
-                            viewModel.loadImage(for: category.name, at: index)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .onAppear() {
+                            if category.imageUrl == nil {
+                                viewModel.loadImage(for: category.name, at: index)
+                            }
                         }
                     }
                 }
+                .padding(.horizontal)
             }
-            .padding(.horizontal)
         }
     }
 }
@@ -110,7 +112,7 @@ struct CategoryItem {
 final class CategoriesViewModel: ObservableObject {
     @Published var categories: [CategoryItem] = []
     private var cancellables: Set<AnyCancellable> = []
-    private let repository: UnsplashRepository
+    let repository: UnsplashRepository
     
     init(repository: UnsplashRepository) {
         self.repository = repository
