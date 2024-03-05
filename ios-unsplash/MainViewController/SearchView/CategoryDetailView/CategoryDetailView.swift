@@ -10,7 +10,7 @@ import Combine
 
 struct CategoryDetailView: View {
     let category: CategoryItem
-    private var viewModel: CategoryDetailViewModel
+    @ObservedObject private var viewModel: CategoryDetailViewModel
     
     init(category: CategoryItem, repository: UnsplashRepository) {
         self.category = category
@@ -37,16 +37,14 @@ struct CategoryDetailView: View {
             }
         }
         .onAppear {
-            DispatchQueue.main.async {
                 viewModel.loadPhotos(query: category.name)
-            }
         }
         .navigationTitle(category.name)
     }
 }
 
 
-final class CategoryDetailViewModel {
+final class CategoryDetailViewModel: ObservableObject {
     @Published var photos: [Photo] = []
     @Published var isLoading = false
     
@@ -72,9 +70,7 @@ final class CategoryDetailViewModel {
                     print("photos")
                 }
             }, receiveValue: { [weak self] response in
-                DispatchQueue.main.async {
                     self?.photos = response.results
-                }
             })
             .store(in: &cancellables)
     }

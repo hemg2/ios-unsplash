@@ -109,7 +109,7 @@ struct CategoryItem {
     var imageUrl: URL?
 }
 
-final class CategoriesViewModel: ObservableObject {
+final class CategoriesViewModel {
     @Published var categories: [CategoryItem] = []
     private var cancellables: Set<AnyCancellable> = []
     let repository: UnsplashRepository
