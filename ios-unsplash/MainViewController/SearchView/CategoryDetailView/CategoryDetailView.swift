@@ -19,17 +19,21 @@ struct CategoryDetailView: View {
     
     var body: some View {
         List {
-            ForEach(viewModel.photos, id: \.id) { photo in
-                AsyncImage(url: URL(string: photo.urls.small)) { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    Color.gray.opacity(0.3)
-                        .aspectRatio(contentMode: .fill)
+            if viewModel.isLoading {
+                ProgressView()
+            } else {
+                ForEach(viewModel.photos, id: \.id) { photo in
+                    AsyncImage(url: URL(string: photo.urls.small)) { image in
+                        image.resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        Color.gray.opacity(0.3)
+                            .aspectRatio(contentMode: .fill)
+                    }
+                    .clipped()
+                    .cornerRadius(10)
+                    .padding(.vertical, 4)
                 }
-                .clipped()
-                .cornerRadius(10)
-                .padding(.vertical, 4)
             }
         }
         .onAppear {
@@ -38,7 +42,6 @@ struct CategoryDetailView: View {
         .navigationTitle(category.name)
     }
 }
-
 
 final class CategoryDetailViewModel: ObservableObject {
     @Published var photos: [Photo] = []
@@ -56,9 +59,7 @@ final class CategoryDetailViewModel: ObservableObject {
         repository.searchPhotos(query: query, page: 1)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
-                DispatchQueue.main.async {
-                    self?.isLoading = false
-                }
+                self?.isLoading = false
                 switch completion {
                 case .failure(let error):
                     print("\(error.localizedDescription)")
@@ -69,5 +70,12 @@ final class CategoryDetailViewModel: ObservableObject {
                 self?.photos = response.results
             })
             .store(in: &cancellables)
+    }
+}
+
+struct CategoryDetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        //        CategoryDetailView(category: CategoryItem(name: "자연"), repository: UnsplashRepositoryImplementation(sessionProvider: URLSessionProviderImplementation()))
+        CategoryDetailView(category: CategoryItem(name: "하늘"), repository: UnsplashRepositoryImplementation(sessionProvider: URLSessionProviderImplementation()))
     }
 }
