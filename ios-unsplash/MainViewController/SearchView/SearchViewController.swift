@@ -10,7 +10,7 @@ import Combine
 
 struct SearchView: View {
     @State private var searchText = ""
-    var viewModel: CategoriesViewModel
+    private var viewModel: CategoriesViewModel
     
     init(viewModel: CategoriesViewModel) {
         self.viewModel = viewModel
@@ -61,7 +61,7 @@ struct SearchBar: View {
 }
 
 struct CategoriesView: View {
-    var viewModel: CategoriesViewModel
+    let viewModel: CategoriesViewModel
     private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
     var body: some View {
