@@ -22,6 +22,9 @@ struct SearchView: View {
                 SearchBar(text: $searchText)
                     .padding()
                     .background(Color.black)
+                    .onChange(of: searchText) { newValue in
+                        viewModel.searchPhotos(query: newValue)
+                    }
                 ScrollView {
                     Color.black.edgesIgnoringSafeArea(.all)
                     VStack(alignment: .leading) {
@@ -154,6 +157,26 @@ final class CategoriesViewModel {
                 self.categories[index].imageUrl = url
             })
             .store(in: &cancellables)
+    }
+    
+    func searchPhotos(query: String) {
+        if !query.isEmpty {
+            repository.searchPhotos(query: query, page: 1)
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { completion in
+                    switch completion {
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    case .finished:
+                        break
+                    }
+                }, receiveValue: { [weak self] response in
+                    self?.categories = response.results.map { photo in
+                        CategoryItem(name: photo.description ?? "", imageUrl: URL(string: photo.urls.small))
+                    }
+                })
+                .store(in: &cancellables)
+        }
     }
 }
 
