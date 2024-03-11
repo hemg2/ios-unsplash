@@ -15,13 +15,11 @@ protocol CategoryDetailViewModelInput {
 protocol CategoryDetailViewModelOutput {
     var photos: [Photo] { get }
     var isLoading: Bool { get }
-    var repository: UnsplashRepository { get }
 }
 
-final class CategoryDetailViewModel: ObservableObject {
+final class CategoryDetailViewModel: ObservableObject, CategoryDetailViewModelInput, CategoryDetailViewModelOutput {
     @Published var photos: [Photo] = []
     @Published var isLoading = false
-    
     private var cancellables: Set<AnyCancellable> = []
     private let repository: UnsplashRepository
     

@@ -17,7 +17,6 @@ protocol CategoriesViewModelInput {
 protocol CategoriesViewModelOutput {
     var categories: [CategoryItem] { get }
     var searchCategories: [CategoryItem] { get }
-    var repository: UnsplashRepository { get }
 }
 
 struct CategoryItem: Hashable {

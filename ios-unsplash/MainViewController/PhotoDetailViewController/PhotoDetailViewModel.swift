@@ -41,6 +41,7 @@ final class PhotoDetailViewModel: PhotoDetailViewModelInput, PhotoDetailViewMode
     }
     
     func toggleLikedState(index: Int) {
+        guard photos.indices.contains(index) else { return }
         photos[index].likedByUser.toggle()
     }
 }
