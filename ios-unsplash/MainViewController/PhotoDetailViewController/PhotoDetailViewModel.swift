@@ -8,7 +8,19 @@
 import Foundation
 import Combine
 
-final class PhotoDetailViewModel {
+protocol PhotoDetailViewModelInput {
+    func updatePhotos(index: Int)
+    func toggleUIElementsVisibility()
+    func toggleLikedState(index: Int)
+}
+
+protocol PhotoDetailViewModelOutput {
+    var photos: [Photo] { get }
+    var currentIndex: Int { get }
+    var isUIElementsHidden: Bool { get }
+}
+
+final class PhotoDetailViewModel: PhotoDetailViewModelInput, PhotoDetailViewModelOutput {
     
     @Published var photos: [Photo]
     @Published var currentIndex: Int
