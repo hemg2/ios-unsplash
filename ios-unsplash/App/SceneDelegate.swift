@@ -16,7 +16,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let sessionProvider: URLSessionProvider = URLSessionProviderImplementation()
         let repository: UnsplashRepository = UnsplashRepositoryImplementation(sessionProvider: sessionProvider)
         let viewModel = PhotoListViewModel(repository: repository)
-        let mainViewController = MainViewController(viewModel: viewModel)
+        let categoriViewModel = CategoriesViewModel(repository: repository)
+        let mainViewController = MainViewController(viewModel: viewModel, categoriViewModel: categoriViewModel)
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = mainViewController
         window?.backgroundColor = .systemBackground
