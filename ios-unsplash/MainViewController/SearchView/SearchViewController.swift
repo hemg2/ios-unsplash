@@ -31,7 +31,7 @@ struct SearchView: View {
                         Text("범주별 찾아보기")
                             .foregroundColor(.white)
                             .padding(.horizontal)
-                        CategoriesView(viewModel: viewModel)
+                        CategoriesView(searchText: $searchText, viewModel: viewModel)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -64,14 +64,14 @@ struct SearchBar: View {
 }
 
 struct CategoriesView: View {
+    @Binding var searchText: String
     let viewModel: CategoriesViewModel
     private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16) {
-                ForEach(0..<viewModel.categories.count, id: \.self) { index in
-                    let category = viewModel.categories[index]
+                ForEach(searchText.isEmpty ? viewModel.categories : viewModel.searchCategories, id: \.self) { category in
                     NavigationLink(destination: CategoryDetailView(category: category, repository: viewModel.repository)) {
                         ZStack {
                             if let imageUrl = category.imageUrl {
@@ -94,11 +94,6 @@ struct CategoriesView: View {
                                 .background(Color.black.opacity(0.3))
                         }
                         .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .onAppear() {
-                            if category.imageUrl == nil {
-                                viewModel.loadImage(for: category.name, at: index)
-                            }
-                        }
                     }
                 }
                 .padding(.horizontal)
@@ -107,13 +102,15 @@ struct CategoriesView: View {
     }
 }
 
-struct CategoryItem {
+struct CategoryItem: Hashable {
+    let id = UUID()
     var name: String
     var imageUrl: URL?
 }
 
 final class CategoriesViewModel {
     @Published var categories: [CategoryItem] = []
+    @Published var searchCategories: [CategoryItem] = []
     private var cancellables: Set<AnyCancellable> = []
     let repository: UnsplashRepository
     
@@ -160,7 +157,11 @@ final class CategoriesViewModel {
     }
     
     func searchPhotos(query: String) {
-        if !query.isEmpty {
+        if query.isEmpty {
+            DispatchQueue.main.async {
+                self.searchCategories = self.categories
+            }
+        } else {
             repository.searchPhotos(query: query, page: 1)
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { completion in
@@ -171,8 +172,10 @@ final class CategoriesViewModel {
                         break
                     }
                 }, receiveValue: { [weak self] response in
-                    self?.categories = response.results.map { photo in
-                        CategoryItem(name: photo.description ?? "", imageUrl: URL(string: photo.urls.small))
+                    DispatchQueue.main.async {
+                        self?.searchCategories = response.results.map { photo in
+                            CategoryItem(name: photo.description ?? "", imageUrl: URL(string: photo.urls.small))
+                        }
                     }
                 })
                 .store(in: &cancellables)
